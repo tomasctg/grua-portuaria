@@ -66,3 +66,29 @@ Bheqd = (bh  + (beqd/(Rd^2)));
 g=9.82;
 
 yt0 = 45;
+
+bcx =1000;
+bcy= 500;
+Kcy = 1.3e6;
+
+%%Condiciones iniciales en t0
+
+%Caso suspendido:
+%lh: Se tendra un longuitud de cable desenrrollada determianda por el
+%encoder del sistema de izaje. => lh(t0)=lh0
+%l: Longuitud de cable desenrrollado inicial dependera de la longuitud lh0
+%sin enlogamiento mas el elongamiento debido a la fuerza peso. Entonces
+%l(t0)=l0=lh0 + (ml*g)/Kw.
+%Por otro lado, considerando una situacion de equilibrio estatico,
+%xl(t0)=xt(t0)=xl0=xt0. Siendo el angulo theta0 = 0. Luego yt(t0)=yt0, una
+%altura constante donde se encuentra el izaje.
+%Por ultimo, yl(t0)  = yt0 - l0.
+
+ml=15000;
+yt0=45; %[m]
+theta0 = 0;
+xl0=5;
+xt0=xl0;
+lh0=10;
+l0 = lh0 + (ml*g)/Kw;
+yl0 = yt0 - l0;
