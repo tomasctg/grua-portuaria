@@ -3,9 +3,6 @@
 % Masa carro
 mc = 50000; %[Kg]
 
-% Vizcosidad dinamica carro
-bc =1;
-
 %Radio rueda
 Rr = 0.5;
 
@@ -18,26 +15,19 @@ Jm = 10;
 %Inercia rueda
 Jr = 2.0;
 
-%vizcosidad rotor
-bm =1;
-
-%vizcosidad rueda
-br =1;
-
-
 %Inercia rotacional equivalente referenciada a la rueda
-Jeq = (Jr + Jm*(rt^2));
+Jeq = (Jr + Jm*(rt^2))
 
 %Viscosidad dinamica equivalente referenciada a la rueda
 % Beqrot = (br + bm*(rt^2));
-Beqrot = 30;
+Beqrot = 30*(rt^2);
 
 
 %Masa equivalente de carro
-Meq = (mc + Jeq/(Rr^2));
+Meq = (mc + Jeq/(Rr^2))
 
 %Rozamiento equivalente de rueda
-Beqtran = (0 + Beqrot/(Rr^2));
+Beqtran = (0 + Beqrot/(Rr^2))
 
 
 %% Datos generales izaje
@@ -71,7 +61,7 @@ bcx =1000;
 bcy= 500;
 Kcy = 1.3e6;
 
-%%Condiciones iniciales en t0
+%% Condiciones iniciales en t0
 
 %Caso suspendido:
 %lh: Se tendra un longuitud de cable desenrrollada determianda por el
@@ -92,3 +82,13 @@ xt0=xl0;
 lh0=10;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
+
+%%Controlador Carro
+%Polo de sistema carro:l0
+Pc = -Beqtran/Meq
+wpos = -10*Pc;
+n=3;
+bac = (n*wpos*Meq - Beqtran)*Rr/rt
+ksac=n*(wpos^2)*Meq
+ksiac = (wpos^3)*Meq
+
