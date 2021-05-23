@@ -28,16 +28,15 @@ br =1;
 %Inercia rotacional equivalente referenciada a la rueda
 Jeq = (Jr + Jm*(rt^2));
 
-%Viscosidad dinamica equivalente referenciada a la rueda
+%Viscosidad dinamica equivalente referenciada al motor
 % Beqrot = (br + bm*(rt^2));
 Beqrot = 30;
-
+Beqrueda = Beqrot * rt^2;
+Beqtran = (0 + Beqrueda/(Rr^2));
 
 %Masa equivalente de carro
 Meq = (mc + Jeq/(Rr^2));
 
-%Rozamiento equivalente de rueda
-Beqtran = (0 + Beqrot/(Rr^2));
 
 
 %% Datos generales izaje
