@@ -60,7 +60,7 @@ beqd = 18;
 Jeqd = (Jd + Jmd*(rtd^2));
 
 Mheq = (Mh + (Jeqd/(Rd^2)));
-Bheqd = (bh  + (beqd/(Rd^2)));
+Bheqd = (bh  + ((beqd*(rtd^2))/(Rd^2)));
 
 g=9.82;
 
@@ -86,8 +86,35 @@ Kcy = 1.3e6;
 ml=15000;
 yt0=45; %[m]
 theta0 = 0;
-xl0=5;
-xt0=xl0;
+xt0=5;
+xl0=xt0;
 lh0=10;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
+
+%%Controlador Carro
+%Polo de sistema carro:l0
+s=tf('s');
+Hc = 1/(s*(s*Meq + Beqtran));
+Polesc = pole(Hc)
+%pzmap(Hc)
+Pc = -Beqtran/Meq
+wpos = -10*Pc;
+n=2.5;
+bac = (n*wpos*Meq )*(Rr/rt)
+ksac=n*(wpos^2)*Meq*(Rr/rt)
+ksiac = (wpos^3)*Meq*(Rr/rt)
+tau = 1/1000;
+
+%%Controlador Izaje
+%Polo de sistema izaje
+Hiz = 1/(s*(s*Mheq + Bheqd));
+Polesiz = pole(Hiz)
+%pzmap(Hiz)
+Piz = -Bheqd/Mheq
+wposiz = -10*Piz;
+baiz = -(n*wposiz*Mheq)*(Rd/rtd)
+ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
+ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
+
+
