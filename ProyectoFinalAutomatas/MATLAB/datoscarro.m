@@ -1,3 +1,5 @@
+clc
+clear
 %% Datos generales del carro
 
 % Masa carro
@@ -86,9 +88,9 @@ Kcy = 1.3e6;
 ml=15000;
 yt0=45; %[m]
 theta0 = 0;
-xt0=5;
+xt0=-10;
 xl0=xt0;
-lh0=10;
+lh0=40;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
 
@@ -117,4 +119,21 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd)
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
 
+[trayectoria_dy,trayectoria_dx]=gen_traj_2([5,15,10,1,1],xt0,yl0,4);
 
+% x=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+xt0;
+% y=cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0;
+
+% figure(6)
+% plot(x,y)
+% 
+% figure(1)
+% plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
+% % figure(2)
+% % plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+% % 
+figure(3)
+plot(trayectoria_dx(:,2),xt0 + cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1)))
+hold on
+plot(trayectoria_dy(:,2),-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0)
+% 
