@@ -83,14 +83,15 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
     time_max_acel_y =vy_max_sc/ay_max;
     y_aceled = (ay_max/2)*(time_max_acel_y^2);
     %Aca es donde especifican las distancia desde la posicion en la
-    %direccion correspondiente donde estot hasta el siguiente punto.
+    %direccion correspondiente donde estoy hasta el siguiente punto.
     %Son todos deplazamientos relativos, despues arma la trayectoria
     %sumando las condiciones inciales de cada punto.
     t_velcont_y = (deltay_part0-(y_aceled*2))/vy_max_sc;
     if(t_velcont_y>=0)
         break;
     end
-    vy_max_sc=vy_max_sc-0.0001;
+    %vy_max_sc = vy_max_sc-0.0001;
+    vy_max_sc = sqrt(deltay_part0*ay_max)-0.0001;
     end
     
     %RESET VALUES
@@ -160,12 +161,15 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
         while(true)
         
         time_max_acel_x =(vx_max*k)/ax_max;
+        %time_max_acel_x =(vx_max)/ax_max;
         x_aceled = (ax_max/2)*(time_max_acel_x^2);
         t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max*k);
+        %t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max);
         if(t_velcont_x>=0)
             break;
         end
-        vx_max=vx_max-0.0001;
+        %vx_max=vx_max-0.0001;
+        vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) / k - 0.0001;
         end
 
         
