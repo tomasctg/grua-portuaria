@@ -119,13 +119,13 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd)
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
 
-[trayectoria_dy,trayectoria_dx]=gen_traj_2([5,15,10,1,1],xt0,yl0,4);
+[trayectoria_dy,trayectoria_dx]=gen_traj_2([10,12,20,5,1],xt0,yl0,3,0);
 
-% x=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+xt0;
-% y=cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0;
+x=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+xt0;
+y=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0;
 
-% figure(6)
-% plot(x,y)
+figure(6)
+plot(x,y(1:length(y)-1,1))
 % 
 % figure(1)
 % plot(trayectoria_dx(:,2),trayectoria_dx(:,1))

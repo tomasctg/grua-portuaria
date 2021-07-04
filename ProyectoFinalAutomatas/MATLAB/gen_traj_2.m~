@@ -1,4 +1,4 @@
-function [trayectoria_dy,trayectoria_dx] = gen_traj_2( estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy_init,posx_end,twistlocks)
     %Datos
     dt = 0.01;
     
@@ -288,12 +288,9 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_2( estado_barco,posx_init,po
     
     
     if(flag==1)
-        if(~isempty(trayectoria_dy))
-        t=t+trayectoria_dy(end,2);
-        trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
-        else
-        trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
-        end
+    if(~t
+    t=t+trayectoria_dy(end,2);
+    trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
     else
     trayectoria_dy = [-vy1_t', t'];
     end
