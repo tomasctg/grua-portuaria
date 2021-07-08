@@ -88,9 +88,9 @@ Kcy = 1.3e6;
 ml=15000;
 yt0=45; %[m]
 theta0 = 0;
-xt0=-10;
+xt0=-20;
 xl0=xt0;
-lh0=40;
+lh0=42;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
 
@@ -119,21 +119,39 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd)
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
 
-[trayectoria_dy,trayectoria_dx]=gen_traj_2([10,12,20,5,1],xt0,yl0,3,0);
-
-x=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+xt0;
-y=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0;
-
-figure(6)
-plot(x,y(1:length(y)-1,1))
+% [trayectoria_dy_to_boat,trayectoria_dx_to_boat,trayectoria_dy_to_boat_end,trayectoria_dx_to_boat_end]=gen_traj_to_boat([10,15,10,5,1],xt0,yl0,4,0);
 % 
-% figure(1)
-% plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
-% % figure(2)
-% % plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+% x_to_boat=cumtrapz(trayectoria_dx_to_boat(:,2),trayectoria_dx_to_boat(:,1))+xl0;
+% y_to_boat=-cumtrapz(trayectoria_dy_to_boat(:,2),trayectoria_dy_to_boat(:,1))+yl0;
+% 
+% 
+% trayectoria_dy_to_boat = timeseries(trayectoria_dy_to_boat(:,1)',trayectoria_dy_to_boat(:,2)');
+% trayectoria_dx_to_boat = timeseries(trayectoria_dx_to_boat(:,1)',trayectoria_dx_to_boat(:,2)');
+% 
+% 
+% trayectoria_dy_to_boat_end = timeseries(trayectoria_dy_to_boat_end(:,1)',trayectoria_dy_to_boat_end(:,2)');
+% trayectoria_dx_to_boat_end = timeseries(trayectoria_dx_to_boat_end(:,1)',trayectoria_dx_to_boat_end(:,2)');
+% 
+% % [trayectoria_dy_to_dock,trayectoria_dx_to_dock]=gen_traj_to_dock([10,15,10,5,1],4,-7.500,1,0);
 % % 
-figure(3)
-plot(trayectoria_dx(:,2),xt0 + cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1)))
-hold on
-plot(trayectoria_dy(:,2),-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0)
 % 
+% % x_to_dock=cumtrapz(trayectoria_dx_to_dock(:,2),trayectoria_dx_to_dock(:,1))+7;
+% % y_to_dock=-cumtrapz(trayectoria_dy_to_dock(:,2),trayectoria_dy_to_dock(:,1))-7.50;
+% % 
+% 
+% % 
+% % figure(6)
+% % plot(x_to_dock,y_to_dock(1:length(y_to_dock)-1,1))
+% % figure(7)
+% % plot(x_to_boat,y_to_boat(1:length(y_to_boat)-1,1))
+% % % 
+% % figure(1)
+% % plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
+% % % figure(2)
+% % % plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+% % % 
+% % figure(3)
+% % plot(trayectoria_dx(:,2),xt0 + cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1)))
+% % hold on
+% % plot(trayectoria_dy(:,2),-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0)
+% % % 

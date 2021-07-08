@@ -1,6 +1,6 @@
-function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks)
     %Datos
-    dt = 0.01;
+    dt = 1e-3;
     
     if(twistlocks)
         vy_max = 1;
@@ -82,7 +82,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
             break;
         end
         %vy_max_sc = vy_max_sc-0.0001;
-        vy_max = sqrt(deltay_part0*ay_max)-0.01;
+        vy_max = sqrt(deltay_part0*ay_max)-0.1;
         end
 
         %RESET VALUES
@@ -150,7 +150,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
             break;
         end
         %vx_max=vx_max-0.0001;
-        vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) / k - 0.01;
+        vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) / k - 0.1;
         end
 
         
@@ -177,7 +177,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
 
         t = t + t_total_0;
         dx1_t = cumtrapz(t,ax1_t);
-        x1_t = cumtrapz(t,dx1_t) + posx_init;
+%         x1_t = cumtrapz(t,dx1_t) + posx_init;
         
         if(flag==0)
             trayectoria_dx =[dx1_t' , t'];
@@ -260,7 +260,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
         if( ~(isempty(prof_vel_1_2.ts)) && ~(isempty(prof_vel_2_3.ts)) )
             break;
         end
-        k=k-0.01;
+        k=k-0.1;
         
         t = [];
         trayectoria_dx =[];
@@ -288,9 +288,12 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
     
     
     if(flag==1)
-    if(~t
-    t=t+trayectoria_dy(end,2);
-    trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
+        if(~isempty(trayectoria_dy))
+        t=t+trayectoria_dy(end,2);
+        trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
+        else
+        trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
+        end
     else
     trayectoria_dy = [-vy1_t', t'];
     end
@@ -312,21 +315,13 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
     
     t=t+trayectoria_dy(end,2);
     trayectoria_dy = [trayectoria_dy; [vy2_t', t']];
+    vyt = trayectoria_dy(:,1);
+    vxt = trayectoria_dx(:,1);
+    x_end = x_positions(posx_end);
+
     y2_t=(-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init);
 
-        %COMO USO EL BLOQUE DE REPETE SEQUENCE, TENGO QUE CONTINUAR 
-        %LA TRAYECTORIA UN TIEMPO LARGO, PARA QUE NO SE VUELVA A REPETIR 
-        %LA CONSIGNA EN LA SIMULACION.
-        t_end_y=(dt+trayectoria_dy(end,2):dt:40);
-        t_end_x=(dt+trayectoria_dx(end,2):dt:40);
-        dx_end = 0*t_end_x;
-        dy_end = 0*t_end_y;
-        
-        %RESULTADO FINAL. 
-        trayectoria_dy = [trayectoria_dy; [dy_end',t_end_y']];
-        trayectoria_dx = [trayectoria_dx; [dx_end',t_end_x']];
- 
-        
+    
     while(true)    
     time_max_acel_y =vy_max/ay_max;
     y_aceled = (ay_max/2)*(time_max_acel_y^2);
@@ -344,7 +339,6 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
     %RESET VALUES
     vx_max = 4; %[m/s]
     vy_max = 3; 
-    vy_max_cc = 1;
     ay_max=1;
     ax_max=1;
     
@@ -353,7 +347,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
     
     %Tiempo total de trayectoria
     t_total_end = (time_max_acel_y*2)+t_velcont_y;
-    t=dt:dt:t_total_end;
+    t=0:dt:t_total_end;
     ayend_t = [];   
     %Determinacion de aceleraciones para cada isntante de tiempo 
     for u=1:length(t)
@@ -373,43 +367,12 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj( estado_barco,posx_init,posy
 
     %Vector de 0s, porque solo se mueve en y.
     dxend_t_x = 0*t;
-    
-    t=t+trayectoria_dy(end,2);
-    
-    %ACA SE ARMA LA TRAYECTORIA
-    trayectoria_dx= [trayectoria_dx; [dxend_t_x' , t']];
+ 
+%     Final de la trayectoria
+    vxt_end= dxend_t_x'
     %Negativo por la convencion de izaje.
-    trayectoria_dy= [trayectoria_dy; [dyend_t_y' , t']];
-        
-    
-    t_end_y=(dt+trayectoria_dy(end,2):dt:150);
-    t_end_x=(dt+trayectoria_dx(end,2):dt:150);
-    dx_end = 0*t_end_x;
-    dy_end = 0*t_end_y;
-        
-        %RESULTADO FINAL. 
-    trayectoria_dy = [trayectoria_dy; [dy_end',t_end_y']];
-    trayectoria_dx = [trayectoria_dx; [dx_end',t_end_x']];
- 
- 
+    vyt_end= dyend_t_y'
         
 end
 
 
-
-
-    %Como tengo una aceleracion maxima, lo primero que hago es calcular el
-    %tiempo que lleva llegar a la velocidad maxima con aceleracion maxima.
-    %Luego con ese tiempo, calculo el desplazamiento en ese periodo de
-    %tiempo (amx/2 * t^2). Ese desplazamiento lo multiplico por dos, porque
-    %despues hay que desacelerar de la misma forma que se acelero. Asi
-    %calculo el tiempo que deberia estar moviendome a velocidad_max
-    %constante para que cuando se desacelere y se detenga el movimiento, se
-    %cumpla con la distancia requerida. IMPORTANTE, puede ser el caso que
-    %la distanacia a recorrer sea tan chica que el movimiento no alcanze su
-    %velocidad maxima y tenga que desacelerar. Es decir, el perfil de
-    %aceleracion no tendra tiempo muerto y se acortaran los tiempos a los
-    %cuales se mantiene una aceleracion_max constante. 
-    %Para eso use un while donde chequeo que el tiempo a vel constante no
-    %sea negativo, reactualizando la velocidad maxima hasta que ese tiempo
-    %sea nulo. En el caso que sea positivo de entrada, se verifica el if y
