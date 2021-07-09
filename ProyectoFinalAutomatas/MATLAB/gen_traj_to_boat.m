@@ -16,6 +16,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     hy_cont = 2.5;
     hx_cont = 2;
     ysb=12;
+    safety_distance=5;
     
     %Determino la coordenada en x de cada columna
     x_positions = [hx_cont/2];
@@ -25,15 +26,15 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     theta = atan(vy_max/vx_max);
     
     
-    %Determino columna con mayor cantidad de contairnes
+    %Determino columna con mayor cantidad de containers
     [max_height_colunm,max_height_colunm_index] = max(estado_barco(1:posx_end));
     
     %Valor altura de columna referenciado al muelle
-    max_height_colunm=max_height_colunm*hy_cont - boat_under_water;
+    max_height_colunm=max_height_colunm*hy_cont - boat_under_water + safety_distance;
     
     %Chequear si las alturas de las columnas estan por encima o por debajo
     %de la viga testera
-    if(max_height_colunm>=ysb)
+    if(max_height_colunm>=ysb+safety_distance)
         y_point1=[];
         for u=1:max_height_colunm_index
             %Calculos geometricos para determinar el punto 1
@@ -42,13 +43,13 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
             y_max = estado_barco(u)*hy_cont - boat_under_water;
             %Vector con las alturas de elevacion vertical hasta punto 1,
             %representando cada indice el calculo para cada columna.
-            y_point1(u)=y_max-h_max;
+            y_point1(u)=y_max-h_max+safety_distance;
             flag=1;
         end
     else
         d = abs(posx_init);
         h_max=d*tan(theta);
-        y_point1(1)=ysb-h_max;
+        y_point1(1)=ysb-h_max+safety_distance;
         flag=0;
     end
 
@@ -98,7 +99,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         t_total_0 = (time_max_acel_y*2)+t_velcont_y;
         t=0:dt:t_total_0;
         ay0_t = [];   
-        %Determinacion de aceleraciones para cada isntante de tiempo 
+        %Determinacion de aceleraciones para cada instante de tiempo 
         for u=1:length(t)
             if(t(u)<=time_max_acel_y)   
                 ay0_t(u)=1;
@@ -220,6 +221,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         else
             deltay1 = max_height_colunm - y0_t(end);
         end
+        deltay1 = deltay1 + safety_distance;
         
         Amax1 = ay_max;
 
@@ -236,12 +238,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
                 y_max = estado_barco(u)*hy_cont - boat_under_water;
                 %Vector con las alturas de elevacion vertical hasta punto 1,
                 %representando cada indice el calculo para cada columna.
-                y_point3(u)=y_max-h_max;
+                y_point3(u)=y_max-h_max+safety_distance;
             end
         else
                 d = x_positions(posx_end);
                 h_max=d*tan(theta);
-                y_point3=ysb-h_max;
+                y_point3=ysb-h_max+safety_distance;
         end
             
         %Datos para solver de punto 2 a 3
@@ -252,7 +254,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         else
              deltay2 = max_height_colunm - max(y_point3);
         end
-       
+        deltay2 = deltay2 + safety_distance;
+        
         Amax2 = ay_max;
 
         prof_vel_2_3 = solve_profile_vel(deltay2,deltat2,Amax2);
