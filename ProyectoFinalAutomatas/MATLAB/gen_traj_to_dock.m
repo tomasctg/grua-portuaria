@@ -1,17 +1,18 @@
-function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks)
     
 %     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
 %     stateflow.
 
     %Datos
-    dt = 0.01;
+    dt = 1e-3;
     
     if(twistlocks)
-        vy_max = 1;
+        vy_max_aux=1;
     else
-        vy_max = 3;
+        vy_max_aux = 3;
     end
     
+    vy_max = vy_max_aux;
     vx_max = 4;
     ay_max=1;
     ax_max=1;
@@ -23,6 +24,8 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
     hy_cont = 2.5;
     hx_cont = 2;
     ysb=12;
+    
+    safety_distance=5;
     
     %Determino la coordenada en x de cada columna
     x_positions = [hx_cont/2];
@@ -42,11 +45,11 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
     [max_height_colunm,max_height_colunm_index] = max(estado_barco(1:posx_init));
     
     %Valor altura de columna referenciado al muelle
-    max_height_colunm=max_height_colunm*hy_cont - boat_under_water;
+    max_height_colunm=max_height_colunm*hy_cont - boat_under_water + safety_distance;
     
     %Chequear si las alturas de las columnas estan por encima o por debajo
     %de la viga testera
-    if(max_height_colunm>=ysb)
+    if(max_height_colunm>=ysb+safety_distance)
         y_point1=[];
         for u=max_height_colunm_index:posx_init
             %Calculos geometricos para determinar el punto 1
@@ -55,13 +58,13 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
             y_max = estado_barco(u)*hy_cont - boat_under_water;
             %Vector con las alturas de elevacion vertical hasta punto 1,
             %representando cada indice el calculo para cada columna.
-            y_point1(u)=y_max-h_max;
+            y_point1(u)=y_max-h_max+safety_distance;
             flag=1;
         end
     else
         d = posx_init;
         h_max=d*tan(theta);
-        y_point1(1)=ysb-h_max;
+        y_point1(1)=ysb-h_max+safety_distance;
         flag=0;
     end
 
@@ -100,7 +103,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
 
         %RESET VALUES
         vx_max = 4; %[m/s]
-        vy_max = 3;
+        vy_max = vy_max_aux;
         ay_max=1;
         ax_max=1;
 
@@ -143,8 +146,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
         y0_t=posy_init;
     end
     
-    plot(trayectoria_dy(:,2),y0_t)
-   
+     
     
     %COMIENZA CALCULO DE TRAYECTORIAS DESDE PUNTO 1 a 2.
     %Hago lo mismo que explique mas arriba. Solo que ahora para la
@@ -220,7 +222,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
         %d_obs1.
 
         for u=1:length(x_total)
-            if(abs(x_total(u)-d_obs1) <= 0.01)
+            if(abs(x_total(u)-d_obs1) <= 0.1)
                 t_obs1 = trayectoria_dx(u,2);
             end
             if((abs(x_total(u)-x_positions_dock(posx_end))) <= 0.1)
@@ -232,7 +234,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
         
         deltat1 = t_obs1 - t_total_0;
         if(flag==0)
-            deltay1 = ysb - y0_t(end);
+            deltay1 = ysb - y0_t(end)+ safety_distance;
         else
             deltay1 = max_height_colunm - y0_t(end);
         end
@@ -251,19 +253,19 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
                 y_max = estado_barco(u)*hy_cont - boat_under_water;
                 %Vector con las alturas de elevacion vertical hasta punto 1,
                 %representando cada indice el calculo para cada columna.
-                y_point3(u)=y_max-h_max;
+                y_point3(u)=y_max-h_max+safety_distance;
             end
         else
                 d =-x_positions_dock(posx_end);
                 h_max=d*tan(theta);
-                y_point3=ysb-h_max;
+                y_point3=ysb-h_max+safety_distance;
         end
             
         %Datos para solver de punto 2 a 3
         deltat2 = t_obs2 - t_obs1;
         
         if(flag==0)
-            deltay2 = ysb - max(y_point3);
+            deltay2 = ysb +safety_distance - max(y_point3);
         else
              deltay2 = max_height_colunm - max(y_point3);
         end
@@ -330,19 +332,10 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
     
     t=t+trayectoria_dy(end,2);
     trayectoria_dy = [trayectoria_dy; [vy2_t', t']];
+    vyt = trayectoria_dy(:,1);
+    vxt = trayectoria_dx(:,1);
+    x_end = x_positions_dock(posx_end);
     y2_t=(-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init);
-
-        %COMO USO EL BLOQUE DE REPETE SEQUENCE, TENGO QUE CONTINUAR 
-        %LA TRAYECTORIA UN TIEMPO LARGO, PARA QUE NO SE VUELVA A REPETIR 
-        %LA CONSIGNA EN LA SIMULACION.
-        t_end_y=(dt+trayectoria_dy(end,2):dt:40);
-        t_end_x=(dt+trayectoria_dx(end,2):dt:40);
-        dx_end = 0*t_end_x;
-        dy_end = 0*t_end_y;
-        
-        %RESULTADO FINAL. 
-        trayectoria_dy = [trayectoria_dy; [dy_end',t_end_y']];
-        trayectoria_dx = [trayectoria_dx; [dx_end',t_end_x']];
  
         
     while(true)    
@@ -361,7 +354,7 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
     
     %RESET VALUES
     vx_max = 4; %[m/s]
-    vy_max = 3; 
+    vy_max = vy_max_aux; 
     vy_max_cc = 1;
     ay_max=1;
     ax_max=1;
@@ -384,31 +377,23 @@ function [trayectoria_dy,trayectoria_dx] = gen_traj_to_dock( estado_barco,posx_i
         end
     end
     
-    %Integracion acumulativa, obtengo el perfil de velocidad.
+      %Integracion acumulativa, obtengo el perfil de velocidad.
     dyend_t_y = cumtrapz(t,ayend_t);
     %Integracion acumulativa, obtengo el perfil de posicion. Solo para 
     %corroborar, el perfil que usamos es de velocidad.
 
     %Vector de 0s, porque solo se mueve en y.
     dxend_t_x = 0*t;
-    
-    t=t+trayectoria_dy(end,2);
-    
-    %ACA SE ARMA LA TRAYECTORIA
-    trayectoria_dx= [trayectoria_dx; [dxend_t_x' , t']];
-    %Negativo por la convencion de izaje.
-    trayectoria_dy= [trayectoria_dy; [dyend_t_y' , t']];
-        
-    
-    t_end_y=(dt+trayectoria_dy(end,2):dt:150);
-    t_end_x=(dt+trayectoria_dx(end,2):dt:150);
-    dx_end = 0*t_end_x;
-    dy_end = 0*t_end_y;
-        
-        %RESULTADO FINAL. 
-    trayectoria_dy = [trayectoria_dy; [dy_end',t_end_y']];
-    trayectoria_dx = [trayectoria_dx; [dx_end',t_end_x']];
  
+%     Final de la trayectoria
+    vxt_end= dxend_t_x'
+    %Negativo por la convencion de izaje.
+    vyt_end= dyend_t_y'
+    
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+ x_positions(posx_init);
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+%     plot(x_to_boat,y_to_boat)
  
         
 end

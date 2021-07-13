@@ -88,7 +88,7 @@ Kcy = 1.3e6;
 ml=15000;
 yt0=45; %[m]
 theta0 = 0;
-xt0=-20;
+xt0=7;
 xl0=xt0;
 lh0=42;
 l0 = lh0 + (ml*g)/Kw;
@@ -119,12 +119,9 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd)
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
 
-% [trayectoria_dy_to_boat,trayectoria_dx_to_boat,trayectoria_dy_to_boat_end,trayectoria_dx_to_boat_end]=gen_traj_to_boat([10,15,10,5,1],xt0,yl0,4,0);
-% 
-% x_to_boat=cumtrapz(trayectoria_dx_to_boat(:,2),trayectoria_dx_to_boat(:,1))+xl0;
-% y_to_boat=-cumtrapz(trayectoria_dy_to_boat(:,2),trayectoria_dy_to_boat(:,1))+yl0;
-% 
-% 
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([10,15,10,5,1],-20,2,4,0);
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([10,15,13,5,1],4,5,2,0);
+
 % trayectoria_dy_to_boat = timeseries(trayectoria_dy_to_boat(:,1)',trayectoria_dy_to_boat(:,2)');
 % trayectoria_dx_to_boat = timeseries(trayectoria_dx_to_boat(:,1)',trayectoria_dx_to_boat(:,2)');
 % 

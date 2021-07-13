@@ -3,11 +3,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     dt = 1e-3;
     
     if(twistlocks)
-        vy_max = 1;
+        vy_max_aux=1;
     else
-        vy_max = 3;
+        vy_max_aux = 3;
     end
     
+    vy_max = vy_max_aux
     vx_max = 4;
     ay_max=1;
     ax_max=1;
@@ -88,7 +89,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
 
         %RESET VALUES
         vx_max = 4; %[m/s]
-        vy_max = 3;
+        vy_max = vy_max_aux;
         ay_max=1;
         ax_max=1;
 
@@ -341,7 +342,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     
     %RESET VALUES
     vx_max = 4; %[m/s]
-    vy_max = 3; 
+    vy_max = vy_max_aux; 
     ay_max=1;
     ax_max=1;
     
@@ -375,6 +376,11 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     vxt_end= dxend_t_x'
     %Negativo por la convencion de izaje.
     vyt_end= dyend_t_y'
+    
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+%     plot(x_to_boat,y_to_boat)
         
 end
 
