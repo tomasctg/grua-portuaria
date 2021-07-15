@@ -2,7 +2,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     
 %     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
 %     stateflow.
-
+    tic
     %Datos
     dt = 1e-3;
     
@@ -146,13 +146,13 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
         y0_t=posy_init;
     end
     
-     
     
     %COMIENZA CALCULO DE TRAYECTORIAS DESDE PUNTO 1 a 2.
     %Hago lo mismo que explique mas arriba. Solo que ahora para la
     %direccion en x desde el punto 1 al punto 2.
     
     %LOOP GENERAL PARA LOGRAR SINCRONIA EN EL MOVIMIENTO
+    tic
     k=1;
     while(true)  
         if(k<0)
@@ -284,7 +284,15 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
         x_total = [];       
     end
     
-    t_total_1_y = double(prof_vel_1_2.ta*2 + prof_vel_1_2.ts);
+    
+    %%%%%%%%%%%%%%%%%
+        
+    ta1_2=double(prof_vel_1_2.ta);
+    ts1_2= double(prof_vel_1_2.ts);
+    vmax1_2=double(prof_vel_1_2.vmax);
+    
+    
+    t_total_1_y = (ta1_2*2 + ts1_2);
     if(flag==1)
        t=dt:dt:t_total_1_y;
     else
@@ -294,12 +302,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     vy1_t = [];   
 
     for u=1:length(t)
-        if(t(u)<=prof_vel_1_2.ta)   
-            vy1_t(u)=(t(u)*double(prof_vel_1_2.vmax))/double(prof_vel_1_2.ta);
-        elseif((t(end)-t(u))<=double(prof_vel_1_2.ta))
-            vy1_t(u)=double(prof_vel_1_2.vmax)*(1 - (t(u)-(double(prof_vel_1_2.ta+prof_vel_1_2.ts)))/double(prof_vel_1_2.ta));
+        if(t(u)<=ta1_2)   
+            vy1_t(u)=(t(u)*(vmax1_2))/(ta1_2);
+        elseif((t(end)-t(u))<=(ta1_2))
+            vy1_t(u)=(vmax1_2)*(1 - (t(u)-((ta1_2+ts1_2)))/(ta1_2));
         else
-            vy1_t(u)=double(prof_vel_1_2.vmax);
+            vy1_t(u)=(vmax1_2);
         end
     end
     
@@ -315,17 +323,21 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     trayectoria_dy = [-vy1_t', t'];
     end
     
-    t_total_2_y = double(prof_vel_2_3.ta*2 + prof_vel_2_3.ts);
+    ta2_3=double(prof_vel_2_3.ta);
+    ts2_3= double(prof_vel_2_3.ts);
+    vmax2_3=double(prof_vel_2_3.vmax);
+    
+    t_total_2_y = (ta2_3*2 + ts2_3);
     t=dt:dt:t_total_2_y;
     vy2_t = [];   
     
     for u=1:length(t)
-        if(t(u)<=prof_vel_2_3.ta)   
-            vy2_t(u)=(t(u)*double(prof_vel_2_3.vmax))/double(prof_vel_2_3.ta);
-        elseif((t(end)-t(u))<=double(prof_vel_2_3.ta))
-            vy2_t(u)=double(prof_vel_2_3.vmax)*(1 - (t(u)-(double(prof_vel_2_3.ta+prof_vel_2_3.ts)))/double(prof_vel_2_3.ta));
+        if(t(u)<=ta2_3)   
+            vy2_t(u)=(t(u)*(vmax2_3))/(ta2_3);
+        elseif((t(end)-t(u))<=(ta2_3))
+            vy2_t(u)=(vmax2_3)*(1 - (t(u)-((ta2_3+ts2_3)))/(ta2_3));
         else
-            vy2_t(u)=double(prof_vel_2_3.vmax);
+            vy2_t(u)=(vmax2_3);
         end
     end
     
@@ -385,15 +397,16 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     %Vector de 0s, porque solo se mueve en y.
     dxend_t_x = 0*t;
  
-%     Final de la trayectoria
-    vxt_end= dxend_t_x'
+%     Final de la trayector;ia
+    vxt_end= dxend_t_x';
     %Negativo por la convencion de izaje.
-    vyt_end= dyend_t_y'
+    vyt_end= dyend_t_y';
+    toc
     
-%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+ x_positions(posx_init);
-%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-% 
-%     plot(x_to_boat,y_to_boat)
+    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+ x_positions(posx_init);
+    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+
+    plot(x_to_boat,y_to_boat)
  
         
 end
