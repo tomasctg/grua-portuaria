@@ -1,5 +1,6 @@
 clc
 clear
+close all
 %% Datos generales del carro
 
 % Masa carro
@@ -113,13 +114,13 @@ tau = 1/1000;
 Hiz = 1/(s*(s*Mheq + Bheqd));
 Polesiz = pole(Hiz)
 %pzmap(Hiz)
-Piz = -Bheqd/Mheq
+Piz = -Bheqd/Mheq;
 wposiz = -10*Piz;
-baiz = -(n*wposiz*Mheq)*(Rd/rtd)
-ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd)
-ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd)
+baiz = -(n*wposiz*Mheq)*(Rd/rtd);
+ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
+ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
-[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([10,15,10,5,1],xl0,yl0,2,0);
+[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([10,5,7,5,1],xl0,yl0,2,0);
 %[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([10,15,13,5,1],4,1,2,0);
 
 % trayectoria_dy_to_boat = timeseries(trayectoria_dy_to_boat(:,1)',trayectoria_dy_to_boat(:,2)');

@@ -114,7 +114,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
         t_total_0 = (time_max_acel_y*2)+t_velcont_y;
         t=0:dt:t_total_0;
         ay0_t = [];   
-        %Determinacion de aceleraciones para cada isntante de tiempo 
+        %Determinacion de aceleraciones para cada instante de tiempo 
         for u=1:length(t)
             if(t(u)<=time_max_acel_y)   
                 ay0_t(u)=1;

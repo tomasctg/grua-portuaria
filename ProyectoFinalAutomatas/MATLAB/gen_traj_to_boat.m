@@ -17,13 +17,14 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     boat_under_water = 20;
     hy_cont = 2.5;
     hx_cont = 2;
+    deltax_cont = 0.2;
     ysb=12;
     safety_distance=5;
     
     %Determino la coordenada en x de cada columna
-    x_positions = [hx_cont/2];
+    x_positions = [hx_cont/2 + deltax_cont];
     for i=2:boat_wide
-        x_positions(i)=(x_positions(i-1) + hx_cont);
+        x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
     end
     theta = atan(vy_max/vx_max);
     
@@ -408,14 +409,19 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     end
     
     
-%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
-%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-% 
-%     
-%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
-%     
-toc
-        
+    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
+    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+
+    
+    
+    plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+    hold on
+    
+%     plot(0, ysb, 'o', 'color', 'r')
+%     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
+    plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+    
+    toc
 end
 
 
