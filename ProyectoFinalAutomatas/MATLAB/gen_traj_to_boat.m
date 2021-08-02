@@ -13,10 +13,10 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     vx_max = 4;
     ay_max=1;
     ax_max=1;
-    boat_wide = 5;
-    boat_under_water = 20;
+    boat_wide = 6;
+    boat_under_water = 10;
     hy_cont = 2.5;
-    hx_cont = 2;
+    hx_cont = 2.44;
     deltax_cont = 0.2;
     ysb=12;
     safety_distance=5;
@@ -221,12 +221,11 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         
         deltat1 = t_obs1 - t_total_0;
         if(flag==0)
-            deltay1 = ysb - y0_t(end);
+            deltay1 = safety_distance + ysb - y0_t(end);
         else
             deltay1 = max_height_colunm - y0_t(end);
         end
-        deltay1 = deltay1 + safety_distance;
-        
+   
         Amax1 = ay_max;
 
         prof_vel_1_2 = solve_profile_vel(deltay1,deltat1,Amax1);
@@ -408,17 +407,18 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         vyt_end = 0;
     end
     
-    
-    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
-    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-
-    
-    
-    plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
-    hold on
+%     
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+%     
+%     figure(1)
+%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+%     hold on
     
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
+
     plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
     
     toc

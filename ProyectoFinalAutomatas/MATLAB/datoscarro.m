@@ -120,36 +120,7 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd);
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
-[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([10,5,7,5,1],xl0,yl0,2,0);
-%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([10,15,13,5,1],4,1,2,0);
+[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([5,5,15,5,1,1],xl0,yl0,2,0);
+% 
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([5,5,15,5,1,1],2,5*2.5-10,1,0);
 
-% trayectoria_dy_to_boat = timeseries(trayectoria_dy_to_boat(:,1)',trayectoria_dy_to_boat(:,2)');
-% trayectoria_dx_to_boat = timeseries(trayectoria_dx_to_boat(:,1)',trayectoria_dx_to_boat(:,2)');
-% 
-% 
-% trayectoria_dy_to_boat_end = timeseries(trayectoria_dy_to_boat_end(:,1)',trayectoria_dy_to_boat_end(:,2)');
-% trayectoria_dx_to_boat_end = timeseries(trayectoria_dx_to_boat_end(:,1)',trayectoria_dx_to_boat_end(:,2)');
-% 
-% % [trayectoria_dy_to_dock,trayectoria_dx_to_dock]=gen_traj_to_dock([10,15,10,5,1],4,-7.500,1,0);
-% % 
-% 
-% % x_to_dock=cumtrapz(trayectoria_dx_to_dock(:,2),trayectoria_dx_to_dock(:,1))+7;
-% % y_to_dock=-cumtrapz(trayectoria_dy_to_dock(:,2),trayectoria_dy_to_dock(:,1))-7.50;
-% % 
-% 
-% % 
-% % figure(6)
-% % plot(x_to_dock,y_to_dock(1:length(y_to_dock)-1,1))
-% % figure(7)
-% % plot(x_to_boat,y_to_boat(1:length(y_to_boat)-1,1))
-% % % 
-% % figure(1)
-% % plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
-% % % figure(2)
-% % % plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
-% % % 
-% % figure(3)
-% % plot(trayectoria_dx(:,2),xt0 + cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1)))
-% % hold on
-% % plot(trayectoria_dy(:,2),-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+yl0)
-% % % 

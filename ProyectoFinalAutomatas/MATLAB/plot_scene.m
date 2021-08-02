@@ -1,15 +1,15 @@
 function plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 
     %% Constantes
-    % Valores de datoscarro.m que no pasan por la generación de
+    % Valores de datoscarro.m que no pasan por la generaciï¿½n de
     % trayectorias.
     xt0 = -20;
     
-    %% Límites del gráfico
+    %% Lï¿½mites del grï¿½fico
     xmin = -25;
     xmax = 15;
     ymin = -21;
-    ymax = 30;
+    ymax = 45;
     
     %% Ploteo muelle
     delta = 1;
@@ -23,8 +23,15 @@ function plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ys
     barco_x = [0, 0, size(x_positions,2)*(hx_cont+deltax_cont)+deltax_cont, size(x_positions,2)*(hx_cont+deltax_cont)+deltax_cont];
     barco_y = [ysb, -boat_under_water-0.5, -boat_under_water-0.5, ysb];
     plot(barco_x, barco_y, 'LineWidth', 3, 'Color', [0.2 0.2 0.2])
-
     
+    %% Ploteo mar
+    %Parte izq barco 
+    rectangle('Position',[-delta ymin-delta delta-0.1 y_muelle-delta],'FaceColor', 'Blue','LineWidth', 0.01)
+    hold on
+    rectangle('Position',[-0.1 ymin (size(x_positions,2)*(hx_cont+deltax_cont)+deltax_cont + 0.2)  (abs(ymin)-abs(boat_under_water)-0.8)],'FaceColor', 'Blue','LineWidth', 0.01)
+    hold on
+    rectangle('Position',[(size(x_positions,2)*(hx_cont+deltax_cont)+deltax_cont + 0.1) ymin-delta delta-0.1 y_muelle-delta],'FaceColor', 'Blue','LineWidth', 0.01)
+    hold on
     %% Ploteo contenedores
 %     for i = 1:size(x_positions,2)
 %         for j = 1:estado_barco(i)
@@ -42,5 +49,5 @@ function plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ys
             
         end
     end
-    hold off
+    hold on
 end

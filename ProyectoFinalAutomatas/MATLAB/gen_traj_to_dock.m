@@ -17,20 +17,21 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     ay_max=1;
     ax_max=1;
     
-    boat_wide = 5;
+    boat_wide = 6;
     dock_wide = 5;
+    deltax_cont = 0.2;
     
-    boat_under_water = 20;
+    boat_under_water = 10;
     hy_cont = 2.5;
-    hx_cont = 2;
+    hx_cont = 2.44;
     ysb=12;
     
     safety_distance=5;
     
     %Determino la coordenada en x de cada columna
-    x_positions = [hx_cont/2];
+    x_positions = [hx_cont/2 + deltax_cont];
     for i=2:boat_wide
-        x_positions(i)=(x_positions(i-1) + hx_cont);
+        x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
     end
     
     %Determino la coordenada en x de posiciones en muelle
@@ -53,7 +54,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
         y_point1=[];
         for u=max_height_colunm_index:posx_init
             %Calculos geometricos para determinar el punto 1
-            d = posx_init - x_positions(u);
+            d = x_positions(posx_init) - x_positions(u);
             h_max=d*tan(theta);
             y_max = estado_barco(u)*hy_cont - boat_under_water;
             %Vector con las alturas de elevacion vertical hasta punto 1,
@@ -403,10 +404,17 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     vyt_end= dyend_t_y';
     toc
     
-    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+ x_positions(posx_init);
-    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+%    
+%     figure(2)
+%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+%     hold on
+%     
+% %     plot(0, ysb, 'o', 'color', 'r')
+% %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
+%     plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 
-    plot(x_to_boat,y_to_boat)
- 
         
 end
