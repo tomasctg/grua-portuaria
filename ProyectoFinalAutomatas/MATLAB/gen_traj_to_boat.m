@@ -4,7 +4,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
     dt = 1e-3;
     
     if(twistlocks)
-        vy_max_aux=1;
+        vy_max_aux=1.5;
     else
         vy_max_aux = 3;
     end
@@ -359,7 +359,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         %direccion correspondiente donde estot hasta el siguiente punto.
         %Son todos deplazamientos relativos, despues arma la trayectoria
         %sumando las condiciones inciales de cada punto.
-        t_velcont_y = ((y2_t(end)-(estado_barco(posx_end)*hy_cont - boat_under_water))-(y_aceled*2))/vy_max;
+        t_velcont_y = ((y2_t(end)-(estado_barco(posx_end)*hy_cont - boat_under_water + safety_distance))-(y_aceled*2))/vy_max;
         if(t_velcont_y>=0)
         break;
         end

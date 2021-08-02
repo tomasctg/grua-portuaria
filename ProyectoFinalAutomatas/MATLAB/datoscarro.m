@@ -120,7 +120,7 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd);
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
-[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([5,5,15,5,1,1],xl0,yl0,2,0);
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([5,5,15,5,1,1],xl0,yl0,2,0);
 % 
 %[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([5,5,15,5,1,1],2,5*2.5-10,1,0);
 
