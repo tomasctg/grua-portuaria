@@ -99,20 +99,20 @@ yl0 = yt0 - l0;
 %Polo de sistema carro:l0
 s=tf('s');
 Hc = 1/(s*(s*Meq + Beqtran));
-Polesc = pole(Hc)
+Polesc = pole(Hc);
 %pzmap(Hc)
-Pc = -Beqtran/Meq
+Pc = -Beqtran/Meq;
 wpos = -10*Pc;
 n=2.5;
-bac = (n*wpos*Meq )*(Rr/rt)
-ksac=n*(wpos^2)*Meq*(Rr/rt)
-ksiac = (wpos^3)*Meq*(Rr/rt)
+bac = (n*wpos*Meq )*(Rr/rt);
+ksac=n*(wpos^2)*Meq*(Rr/rt);
+ksiac = (wpos^3)*Meq*(Rr/rt);
 tau = 1/1000;
 
 %%Controlador Izaje
 %Polo de sistema izaje
 Hiz = 1/(s*(s*Mheq + Bheqd));
-Polesiz = pole(Hiz)
+Polesiz = pole(Hiz);
 %pzmap(Hiz)
 Piz = -Bheqd/Mheq;
 wposiz = -10*Piz;
@@ -120,7 +120,7 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd);
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
-%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([5,5,15,5,1,1],xl0,yl0,2,0);
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_boat([5,5,15,5,1,1], xl0, yl0, 2, 0, ml);
 % 
-%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([5,5,15,5,1,1],2,5*2.5-10,1,0);
+%[vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock([5,5,15,5,1,1], 2, 5*2.5-10 ,1 ,0, ml);
 

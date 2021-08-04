@@ -8,7 +8,6 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
             vy_max_aux = 3;
         elseif ml <= 65000
             vy_max_aux = -(3/65000) + 4.5;
-        end
     else
         vy_max_aux = 3;
     end

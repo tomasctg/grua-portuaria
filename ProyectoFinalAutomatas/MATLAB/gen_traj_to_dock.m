@@ -1,4 +1,4 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
     
 %     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
 %     stateflow.
@@ -7,7 +7,11 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     dt = 1e-3;
     
     if(twistlocks)
-        vy_max_aux=1;
+        if ml <= 32500
+            vy_max_aux = 3;
+        elseif ml <= 65000
+            vy_max_aux = -(3/65000) + 4.5;
+        end
     else
         vy_max_aux = 3;
     end
