@@ -10,7 +10,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
         if ml <= 32500
             vy_max_aux = 3;
         elseif ml <= 65000
-            vy_max_aux = -(3/65000) + 4.5;
+            vy_max_aux = 4.5 -(3/65000)*ml;
         end
     else
         vy_max_aux = 3;
