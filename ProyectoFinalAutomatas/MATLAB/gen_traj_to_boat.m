@@ -1,15 +1,19 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
     tic
     %Datos
     dt = 1e-3;
     
     if(twistlocks)
-        vy_max_aux=1.5;
+        if ml <= 32500
+            vy_max_aux = 3;
+        elseif ml <= 65000
+            vy_max_aux = 4.5 -(3/65000)*ml;
+        end
     else
         vy_max_aux = 3;
     end
     
-    vy_max = vy_max_aux
+    vy_max = vy_max_aux;
     vx_max = 4;
     ay_max=1;
     ax_max=1;
