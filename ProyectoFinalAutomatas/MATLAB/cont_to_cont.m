@@ -1,9 +1,9 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end] = cont_to_cont(estado_barco,posx_init,posy_init,posx_end,twistlocks)
+function [vyt,vxt,x_end,vxt_end,vyt_end,len] = cont_to_cont(estado_barco,posx_init,posy_init,posx_end,twistlocks)
     tic
     %FUNCION PARA OBTENER TRAYECTORIA ENTRE CONTAINERS
     
     %Datos
-    dt = 0.5e-3;
+    dt = 1e-3;
     
     if(twistlocks)
         vy_max_aux=1.5;
@@ -337,7 +337,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = cont_to_cont(estado_barco,posx_init,p
             x_end = x_positions(posx_end);
     end
 %     
-
+len = length(vxt);
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
 %     y_to_boat=[y_to_boat; y_to_boat(end)-cumtrapz(t,vyt_end)];

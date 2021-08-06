@@ -1,4 +1,4 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
+function [vyt,vxt,x_end,vxt_end,vyt_end,len] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
     
 %     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
 %     stateflow.
@@ -362,7 +362,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     %direccion correspondiente donde estot hasta el siguiente punto.
     %Son todos deplazamientos relativos, despues arma la trayectoria
     %sumando las condiciones inciales de cada punto.
-    t_velcont_y = ((y2_t(end)-hy_cont)-(y_aceled*2))/vy_max;
+    t_velcont_y = ((y2_t(end)-hy_cont-safety_distance)-(y_aceled*2))/vy_max;
     if(t_velcont_y>=0)
         break;
     end
@@ -407,6 +407,14 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_dock(estado_barco,posx_in
     %Negativo por la convencion de izaje.
     vyt_end= dyend_t_y';
     toc
+    
+    figure(67)
+    plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
+    hold on
+    plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+    
+    len = length(vxt);
+    
     
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;

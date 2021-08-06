@@ -1,4 +1,4 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
+function [vyt,vxt,x_end,vxt_end,vyt_end,len] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
     tic
     %Datos
     dt = 1e-3;
@@ -410,6 +410,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end] = gen_traj_to_boat(estado_barco,posx_in
         vxt_end = 0;
         vyt_end = 0;
     end
+    
+    len = length(vxt);
     
 %     
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
