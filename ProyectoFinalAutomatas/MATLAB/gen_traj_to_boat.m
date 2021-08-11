@@ -1,4 +1,4 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end,len] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
+function [vyt,vxt,x_end,vxt_end,vyt_end,len,estado_barco2] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
     tic
     %Datos
     dt = 1e-3;
@@ -413,6 +413,13 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len] = gen_traj_to_boat(estado_barco,pos
     
     len = length(vxt);
     
+%     for i=1:boat_wide
+%         estado_barco2(i) = estado_barco(i);
+%     end
+    estado_barco2 = estado_barco;
+    if (twistlocks)
+        estado_barco2(posx_end) = estado_barco(posx_end) + 1;
+    end
 %     
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
@@ -425,7 +432,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len] = gen_traj_to_boat(estado_barco,pos
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 
-    plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+%     plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
     
     toc
 end
