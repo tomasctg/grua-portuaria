@@ -1,4 +1,4 @@
-function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
+function [vyt,vxt,x_end,vxt_end,vyt_end,len,estado_barco2] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
     
 %     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
 %     stateflow.
@@ -418,9 +418,6 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     %Negativo por la convencion de izaje.
     vyt_end= dyend_t_y';
     else
-    vxt_end = zeros(1,1000)';
-    vyt_end = zeros(1,1000)';
-    end
     toc
     
     figure(67)
@@ -428,8 +425,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     hold on
     plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
     
-    len_going = length(vxt);
-    len_down = length(vxt_end);
+    len = length(vxt);
     
     estado_barco2 = estado_barco;
 if (twistlocks)

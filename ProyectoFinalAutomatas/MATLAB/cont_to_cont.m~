@@ -342,7 +342,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
     end
 %     
 len = length(vxt);
-len2 = length(vxt_end);
+len = 
 
 estado_barco2 = estado_barco;
 if (twistlocks)
