@@ -7,7 +7,7 @@ function plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ys
     
     %% L�mites del gr�fico
     xmin = -25;
-    xmax = 15;
+    xmax = 20;
     ymin = -21;
     ymax = 45;
     

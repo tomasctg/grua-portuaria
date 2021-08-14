@@ -363,7 +363,8 @@ estado_barco2 = estado_barco2';
 %         plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
 %         hold on
 % %     
-%     plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+figure(3)     
+plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 % 
 %         
 end

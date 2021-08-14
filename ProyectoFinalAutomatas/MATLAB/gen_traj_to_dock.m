@@ -433,21 +433,23 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     
     estado_barco2 = estado_barco;
 if (twistlocks)
-    estado_barco2(posx_end) = estado_barco(posx_end) - 1;
+    estado_barco2(posx_init) = estado_barco(posx_init) - 1;
 end
 estado_barco2 = estado_barco2';
     
-    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
-    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-
-%    
-    figure(2)
-    plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
-    hold on
-%     
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+% %    
+%     figure(2)
+%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+%     hold on
+% %     
 % %     plot(0, ysb, 'o', 'color', 'r')
 % %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
-    plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+
+figure(2)
+plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 
         
 end

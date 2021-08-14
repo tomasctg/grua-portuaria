@@ -433,7 +433,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 
-%     plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+    figure(1)
+    plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
     
     toc
 end
