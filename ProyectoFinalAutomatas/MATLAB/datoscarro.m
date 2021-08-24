@@ -91,7 +91,7 @@ yt0=45; %[m]
 theta0 = 0;
 xt0=-20;
 xl0=xt0;
-lh0=42;
+lh0=32;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
 
