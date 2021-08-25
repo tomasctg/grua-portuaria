@@ -34,10 +34,14 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     
     %Determino la coordenada en x de cada columna
     x_positions = [hx_cont/2 + deltax_cont];
+    posx_init_index = 1;
     for i=2:boat_wide
         x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
+        if(abs(posx_init - x_positions(i)) <= 0.1)
+            posx_init_index = i;
+        end
     end
-    
+    posx_init = posx_init_index;
     %Determino la coordenada en x de posiciones en muelle
     x_positions_dock = -20;
     for i=2:dock_wide

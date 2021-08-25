@@ -86,7 +86,7 @@ Kcy = 1.3e6;
 %altura constante donde se encuentra el izaje.
 %Por ultimo, yl(t0)  = yt0 - l0.
 
-ml=35000;
+ml=15000;
 yt0=45; %[m]
 theta0 = 0;
 xt0=-20;
