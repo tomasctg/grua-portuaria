@@ -6,11 +6,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     %Datos
     dt = 0.5e-3;
     
+    POT = 97500; %=32500*3=65000*1.5
     if(twistlocks)
         if ml <= 32500
             vy_max_aux = 3;
         elseif ml <= 65000
-            vy_max_aux = 4.5 -(3/65000)*ml;
+            vy_max_aux = POT/ml;
         end
     else
         vy_max_aux = 3;

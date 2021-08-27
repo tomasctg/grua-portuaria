@@ -1,14 +1,13 @@
 function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_boat(estado_barco,posx_init,posy_init,posx_end,twistlocks, ml)
     tic
     %Datos
-    dt = 0.5e-3;
+    dt = 1e-3;
     
-    POT = 97500; %=32500*3=65000*1.5
     if(twistlocks)
         if ml <= 32500
             vy_max_aux = 3;
         elseif ml <= 65000
-            vy_max_aux = POT/ml;
+            vy_max_aux = 4.5 -(3/65000)*ml;
         end
     else
         vy_max_aux = 3;
@@ -435,7 +434,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 
     figure(1)
-    plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+    plot_scene(estado_barco, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
     
     toc
 end
