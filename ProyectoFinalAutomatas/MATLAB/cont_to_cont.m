@@ -3,7 +3,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
     %FUNCION PARA OBTENER TRAYECTORIA ENTRE CONTAINERS
     
     %Datos
-    dt = 1e-3;
+    dt = 0.5e-3;
     
     if(twistlocks)
         if ml <= 32500
