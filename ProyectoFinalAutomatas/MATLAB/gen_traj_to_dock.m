@@ -1,7 +1,5 @@
 function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_traj_to_dock(estado_barco,posx_init,posy_init,posx_end,twistlocks,ml)
     
-%     HAY QUE SACAR LAS MISMAS VARIABLES QUE EN gen_traj_to_boat, para
-%     stateflow.
     tic
     %Datos
     dt = 0.5e-3;

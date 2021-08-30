@@ -1,0 +1,318 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>datoscarro</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-08-30"><meta name="DC.source" content="datoscarro.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Datos generales del carro</a></li><li><a href="#3">Datos generales izaje</a></li></ul></div><pre class="codeinput">clc
+clear
+close <span class="string">all</span>
+</pre><h2 id="2">Datos generales del carro</h2><pre class="codeinput"><span class="comment">% Masa carro</span>
+mc = 50000; <span class="comment">%[Kg]</span>
+
+<span class="comment">% Vizcosidad dinamica carro</span>
+bc =1;
+
+<span class="comment">%Radio rueda</span>
+Rr = 0.5;
+
+<span class="comment">%Relacion de transmision</span>
+rt = 15.0;
+
+<span class="comment">%Inercia rotor</span>
+Jm = 10;
+
+<span class="comment">%Inercia rueda</span>
+Jr = 2.0;
+
+<span class="comment">%vizcosidad rotor</span>
+bm =1;
+
+<span class="comment">%vizcosidad rueda</span>
+br =1;
+
+
+<span class="comment">%Inercia rotacional equivalente referenciada a la rueda</span>
+Jeq = (Jr + Jm*(rt^2));
+
+<span class="comment">%Viscosidad dinamica equivalente referenciada al motor</span>
+<span class="comment">% Beqrot = (br + bm*(rt^2));</span>
+Beqrot = 30;
+Beqrueda = Beqrot * rt^2;
+Beqtran = (0 + Beqrueda/(Rr^2));
+
+<span class="comment">%Masa equivalente de carro</span>
+Meq = (mc + Jeq/(Rr^2));
+</pre><h2 id="3">Datos generales izaje</h2><pre class="codeinput">Mh = 0;
+
+Kw = 1800000; <span class="comment">%[kN/m]</span>
+bw = 30000;
+
+Rd = 0.75;
+
+rtd = 30;
+
+bh=0;
+
+Jd = 8;
+
+Jmd = 30;
+
+beqd = 18;
+
+Jeqd = (Jd + Jmd*(rtd^2));
+
+Mheq = (Mh + (Jeqd/(Rd^2)));
+Bheqd = (bh  + ((beqd*(rtd^2))/(Rd^2)));
+
+g=9.82;
+
+yt0 = 45;
+
+bcx =1000;
+bcy= 500;
+Kcy = 1.3e6;
+
+<span class="comment">%%Condiciones iniciales en t0</span>
+
+<span class="comment">%Caso suspendido:</span>
+<span class="comment">%lh: Se tendra un longuitud de cable desenrrollada determianda por el</span>
+<span class="comment">%encoder del sistema de izaje. =&gt; lh(t0)=lh0</span>
+<span class="comment">%l: Longuitud de cable desenrrollado inicial dependera de la longuitud lh0</span>
+<span class="comment">%sin enlogamiento mas el elongamiento debido a la fuerza peso. Entonces</span>
+<span class="comment">%l(t0)=l0=lh0 + (ml*g)/Kw.</span>
+<span class="comment">%Por otro lado, considerando una situacion de equilibrio estatico,</span>
+<span class="comment">%xl(t0)=xt(t0)=xl0=xt0. Siendo el angulo theta0 = 0. Luego yt(t0)=yt0, una</span>
+<span class="comment">%altura constante donde se encuentra el izaje.</span>
+<span class="comment">%Por ultimo, yl(t0)  = yt0 - l0.</span>
+
+ml=15000;
+yt0=45; <span class="comment">%[m]</span>
+theta0 = 0;
+xt0=-20;
+xl0=xt0;
+lh0=32;
+l0 = lh0 + (ml*g)/Kw;
+yl0 = yt0 - l0;
+
+<span class="comment">%%Controlador Carro</span>
+<span class="comment">%Polo de sistema carro:l0</span>
+s=tf(<span class="string">'s'</span>);
+Hc = 1/(s*(s*Meq + Beqtran));
+Polesc = pole(Hc);
+<span class="comment">%pzmap(Hc)</span>
+Pc = -Beqtran/Meq;
+wpos = -10*Pc;
+n=2.5;
+bac = (n*wpos*Meq )*(Rr/rt);
+ksac=n*(wpos^2)*Meq*(Rr/rt);
+ksiac = (wpos^3)*Meq*(Rr/rt);
+tau = 1/1000;
+
+<span class="comment">%%Controlador Izaje</span>
+<span class="comment">%Polo de sistema izaje</span>
+Hiz = 1/(s*(s*Mheq + Bheqd));
+Polesiz = pole(Hiz);
+<span class="comment">%pzmap(Hiz)</span>
+Piz = -Bheqd/Mheq;
+wposiz = -10*Piz;
+baiz = -(n*wposiz*Mheq)*(Rd/rtd);
+ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
+ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
+
+<span class="comment">% [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,5,15,5,1,1], xl0, yl0, 2, 1, ml);</span>
+<span class="comment">%</span>
+<span class="comment">% boat_state = [6 5 10 7  3 4];</span>
+<span class="comment">% [vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock(boat_state, 5, 4*2.5-10 + 5 ,1 ,1, ml);</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc
+clear
+close all
+%% Datos generales del carro
+
+% Masa carro
+mc = 50000; %[Kg]
+
+% Vizcosidad dinamica carro
+bc =1;
+
+%Radio rueda
+Rr = 0.5;
+
+%Relacion de transmision
+rt = 15.0;
+
+%Inercia rotor
+Jm = 10;
+
+%Inercia rueda
+Jr = 2.0;
+
+%vizcosidad rotor
+bm =1;
+
+%vizcosidad rueda
+br =1;
+
+
+%Inercia rotacional equivalente referenciada a la rueda
+Jeq = (Jr + Jm*(rt^2));
+
+%Viscosidad dinamica equivalente referenciada al motor
+% Beqrot = (br + bm*(rt^2));
+Beqrot = 30;
+Beqrueda = Beqrot * rt^2;
+Beqtran = (0 + Beqrueda/(Rr^2));
+
+%Masa equivalente de carro
+Meq = (mc + Jeq/(Rr^2));
+
+
+
+%% Datos generales izaje
+Mh = 0;
+
+Kw = 1800000; %[kN/m]
+bw = 30000;
+
+Rd = 0.75;
+
+rtd = 30;
+
+bh=0;
+
+Jd = 8;
+
+Jmd = 30;
+
+beqd = 18;
+
+Jeqd = (Jd + Jmd*(rtd^2));
+
+Mheq = (Mh + (Jeqd/(Rd^2)));
+Bheqd = (bh  + ((beqd*(rtd^2))/(Rd^2)));
+
+g=9.82;
+
+yt0 = 45;
+
+bcx =1000;
+bcy= 500;
+Kcy = 1.3e6;
+
+%%Condiciones iniciales en t0
+
+%Caso suspendido:
+%lh: Se tendra un longuitud de cable desenrrollada determianda por el
+%encoder del sistema de izaje. => lh(t0)=lh0
+%l: Longuitud de cable desenrrollado inicial dependera de la longuitud lh0
+%sin enlogamiento mas el elongamiento debido a la fuerza peso. Entonces
+%l(t0)=l0=lh0 + (ml*g)/Kw.
+%Por otro lado, considerando una situacion de equilibrio estatico,
+%xl(t0)=xt(t0)=xl0=xt0. Siendo el angulo theta0 = 0. Luego yt(t0)=yt0, una
+%altura constante donde se encuentra el izaje.
+%Por ultimo, yl(t0)  = yt0 - l0.
+
+ml=15000;
+yt0=45; %[m]
+theta0 = 0;
+xt0=-20;
+xl0=xt0;
+lh0=32;
+l0 = lh0 + (ml*g)/Kw;
+yl0 = yt0 - l0;
+
+%%Controlador Carro
+%Polo de sistema carro:l0
+s=tf('s');
+Hc = 1/(s*(s*Meq + Beqtran));
+Polesc = pole(Hc);
+%pzmap(Hc)
+Pc = -Beqtran/Meq;
+wpos = -10*Pc;
+n=2.5;
+bac = (n*wpos*Meq )*(Rr/rt);
+ksac=n*(wpos^2)*Meq*(Rr/rt);
+ksiac = (wpos^3)*Meq*(Rr/rt);
+tau = 1/1000;
+
+%%Controlador Izaje
+%Polo de sistema izaje
+Hiz = 1/(s*(s*Mheq + Bheqd));
+Polesiz = pole(Hiz);
+%pzmap(Hiz)
+Piz = -Bheqd/Mheq;
+wposiz = -10*Piz;
+baiz = -(n*wposiz*Mheq)*(Rd/rtd);
+ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
+ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
+
+% [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,5,15,5,1,1], xl0, yl0, 2, 1, ml);
+%
+% boat_state = [6 5 10 7  3 4];
+% [vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock(boat_state, 5, 4*2.5-10 + 5 ,1 ,1, ml);
+##### SOURCE END #####
+--></body></html>
