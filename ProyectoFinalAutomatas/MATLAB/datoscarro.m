@@ -123,4 +123,8 @@ ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 % [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,5,15,5,1,1], xl0, yl0, 2, 1, ml);
 %
 % boat_state = [6 5 10 7  3 4];
-% [vyt,vxt,x_end,vxt_end,vyt_end]=gen_traj_to_dock(boat_state, 5, 4*2.5-10 + 5 ,1 ,1, ml);
+% posx_init = 9.33;
+% posy_init = 7.4;
+% posx_end = 1;
+% 
+% [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2]=gen_traj_to_dock(boat_state,posx_init,posy_init,posx_end,1,45000)

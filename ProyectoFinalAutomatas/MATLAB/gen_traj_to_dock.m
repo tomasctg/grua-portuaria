@@ -70,7 +70,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
             flag=1;
         end
     else
-        d = posx_init;
+        d = x_positions(posx_init);
         h_max=d*tan(theta);
         y_point1(1)=ysb-h_max+safety_distance;
         flag=0;
@@ -85,8 +85,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     deltay_part0 = max(y_point1) - posy_init;
     delta_t_part0 = deltay_part0/vy_max;
     t_part0=0:dt:(delta_t_part0);
-    y0 = vy_max*t_part0 + posy_init;
-    x0 = t_part0*0 + posx_init;
+ 
     
     %ACA ARRANCA LO IMPORTANTE
     %Use las aceleraciones maximas en cada direccion, para calcular los
