@@ -32,6 +32,7 @@ br =1;
 Jeq = (Jr + Jm*(rt^2));
 
 %Viscosidad dinamica equivalente referenciada al motor
+
 % Beqrot = (br + bm*(rt^2));
 Beqrot = 30;
 Beqrueda = Beqrot * rt^2;
@@ -73,7 +74,7 @@ bcx =1000;
 bcy= 500;
 Kcy = 1.3e6;
 
-%% Condiciones iniciales en t0
+%%Condiciones iniciales en t0
 
 %Caso suspendido:
 %lh: Se tendra un longuitud de cable desenrrollada determianda por el
@@ -95,8 +96,7 @@ lh0=32;
 l0 = lh0 + (ml*g)/Kw;
 yl0 = yt0 - l0;
 
-%% Controlador Carro
-
+%%Controlador Carro
 %Polo de sistema carro:l0
 s=tf('s');
 Hc = 1/(s*(s*Meq + Beqtran));
@@ -110,7 +110,7 @@ ksac=n*(wpos^2)*Meq*(Rr/rt);
 ksiac = (wpos^3)*Meq*(Rr/rt);
 tau = 1/1000;
 
-%% Controlador Izaje
+%%Controlador Izaje
 %Polo de sistema izaje
 Hiz = 1/(s*(s*Mheq + Bheqd));
 Polesiz = pole(Hiz);
@@ -121,17 +121,11 @@ baiz = -(n*wposiz*Mheq)*(Rd/rtd);
 ksaiz=-n*(wposiz^2)*Mheq*(Rd/rtd);
 ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
-
-%% Testeo generacion de trayectorias
-
 % [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,5,15,5,1,1], xl0, yl0, 2, 1, ml);
-
+%
 % boat_state = [6 5 10 7  3 4];
-
 % posx_init = 9.33;
 % posy_init = 7.4;
 % posx_end = 1;
-
+% 
 % [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2]=gen_traj_to_dock(boat_state,posx_init,posy_init,posx_end,1,45000)
-
-
