@@ -15,7 +15,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
         vy_max_aux = 3;
     end
     
-    vy_max = vy_max_aux
+    vy_max = vy_max_aux;
     vx_max = 4;
     ay_max=1;
     ax_max=1;
@@ -283,7 +283,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
             deltay2 = max_height_colunm - max(y_point3) - safety_distance;
             flag_not_going_down = 1;
             else
-             deltay2 = max_height_colunm - max(y_point3)  
+             deltay2 = max_height_colunm - max(y_point3);
+             flag_not_going_down = 0;
             end
         end
        
@@ -425,10 +426,10 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     end
     toc
     
-    figure(67)
-    plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
-    hold on
-    plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+%     figure(67)
+%     plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
+%     hold on
+%     plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
     
     len_going = length(vxt);
     len_down = length(vxt_end);
@@ -439,19 +440,19 @@ if (twistlocks)
 end
 estado_barco2 = estado_barco2';
     
-%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
-%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-% 
-% %    
-%     figure(2)
-%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
+    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+
+%    
+    figure(2)
+    plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
 %     hold on
 % %     
 % %     plot(0, ysb, 'o', 'color', 'r')
 % %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
-
-figure(2)
-plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+% 
+% figure(2)
+% plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 
         
 end
