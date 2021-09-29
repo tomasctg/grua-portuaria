@@ -1,0 +1,34 @@
+----->FAILED: Chart must have C action language in Objects: 'Leve0'
+PASSED: Chart must not have superstep semantics enabled
+PASSED: Chart must have "Execute (enter) chart at Initialization" disabled
+PASSED: Chart must have "Initialize Outputs every time chart wakes up" disabled
+PASSED: Data name is a reserved keyword and must be changed 
+PASSED: Data name is a reserved keyword and must be changed 
+PASSED: Data name is a reserved keyword and must be changed 
+PASSED: Data name is a reserved keyword and must be changed 
+PASSED: Data name is a reserved keyword and must be changed 
+----->FAILED: Input data can only have boolean data type in Objects: 'vyt', 'xt', 'yl', 'emergency_buttom', 'manual_reset'
+PASSED: There is no input data or signals 
+PASSED: Data name is a reserved keyword and must be changed 
+PASSED: Data name is a reserved keyword and must be changed 
+----->FAILED: Output data can only have boolean data type in Objects: 'flag_enable_level1', 'flag_enable_brakes'
+----->FAILED: Output data can only be state output activity data in Objects: 'flag_enable_level1', 'flag_enable_brakes'
+PASSED: There is no output data or signals 
+PASSED: No data with scope other than input or output allowed
+PASSED: No parallel states allowed
+----->FAILED: Every state must have a corresponding output state activity data in Objects: 'SystemStatusEmergency', 'SystemStatusOkey'
+PASSED: Atomic subcharts not allowed
+PASSED: Simulink Functions in chart not allowed
+PASSED: No inner paths allowed
+PASSED: No state hierarchy allowed
+PASSED: No inner paths allowed
+PASSED: No state hierarchy allowed
+PASSED: There should be a single default transition for the chart
+PASSED: History junctions not allowed
+PASSED: Dangling transitions not allowed
+PASSED: Super-transitions crossing subchart boundaries not allowed
+PASSED: No self transitions allowed
+PASSED: No self transitions allowed
+PASSED: No self transitions allowed
+PASSED: No self transitions allowed
+PASSED: No self transitions allowed

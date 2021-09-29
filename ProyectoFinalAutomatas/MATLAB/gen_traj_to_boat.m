@@ -233,7 +233,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
    
         Amax1 = ay_max;
 
-        prof_vel_1_2 = solve_profile_vel(deltay1,deltat1,Amax1);
+        prof_vel_1_2 = solve_vel_prof(deltay1,deltat1,Amax1);
 
         % Check if the end position is or not the highest column
         if(posx_end ~= max_height_colunm_index || (posx_end == max_height_colunm_index && flag==0))
@@ -266,9 +266,10 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 
             Amax2 = ay_max;
 
-            prof_vel_2_3 = solve_profile_vel(deltay2,deltat2,Amax2);
+            prof_vel_2_3 = solve_vel_prof(deltay2,deltat2,Amax2);
 
-            if( ~(isempty(prof_vel_1_2.ts)) && ~(isempty(prof_vel_2_3.ts)) )
+%             if( ~(isempty(prof_vel_1_2.ts)) && ~(isempty(prof_vel_2_3.ts)) )
+            if(prof_vel_1_2(1) <= vy_max_aux && prof_vel_2_3(1) <= vy_max_aux)
                 break;
             end
             k=k-0.1;
@@ -289,9 +290,9 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     
     
     
-    ta1_2=double(prof_vel_1_2.ta);
-    ts1_2= double(prof_vel_1_2.ts);
-    vmax1_2=double(prof_vel_1_2.vmax);
+    ta1_2=double(prof_vel_1_2(3));
+    ts1_2= double(prof_vel_1_2(2));
+    vmax1_2=double(prof_vel_1_2(1));
     
     t_total_1_y = ta1_2*2 +ts1_2;
     if(flag==1)
@@ -326,9 +327,9 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 
     if(posx_end ~= max_height_colunm_index || (posx_end == max_height_colunm_index && flag==0))
     
-    ta2_3=double(prof_vel_2_3.ta);
-    ts2_3= double(prof_vel_2_3.ts);
-    vmax2_3=double(prof_vel_2_3.vmax);
+    ta2_3=double(prof_vel_2_3(3));
+    ts2_3= double(prof_vel_2_3(2));
+    vmax2_3=double(prof_vel_2_3(3));
     
     
     t_total_2_y = ta2_3*2 + ts2_3;
@@ -423,13 +424,13 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         estado_barco2(posx_end) = estado_barco(posx_end) + 1;
     end
     estado_barco2 = estado_barco2';
-%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
-%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-% 
-%     
-%     figure(1)
-%     plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
-%     hold on
+    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
+    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+
+    
+    figure(1)
+    plot(x_to_boat,y_to_boat(1:length(x_to_boat),1))
+    hold on
     
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
