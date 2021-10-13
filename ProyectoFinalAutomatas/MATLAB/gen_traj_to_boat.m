@@ -424,13 +424,13 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         estado_barco2(posx_end) = estado_barco(posx_end) + 1;
     end
     estado_barco2 = estado_barco2';
-    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
-    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-
-    
-    figure(1)
-    plot(x_to_boat,y_to_boat(1:length(x_to_boat),1))
-    hold on
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+posx_init;
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+%     
+%     figure(1)
+%     plot(x_to_boat,y_to_boat(1:length(x_to_boat),1))
+%     hold on
     
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')

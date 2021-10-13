@@ -16,7 +16,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     end
     
     vy_max = vy_max_aux;
-    vx_max = 4;
+    vx_max = 4.0;
     ay_max=1;
     ax_max=1;
     
@@ -109,7 +109,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
         end
 
         %RESET VALUES
-        vx_max = 4; %[m/s]
+        vx_max = 4.0; %[m/s]
         vy_max = vy_max_aux;
         ay_max=1;
         ax_max=1;
@@ -386,7 +386,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     end
     
     %RESET VALUES
-    vx_max = 4; %[m/s]
+    vx_max = 4.0; %[m/s]
     vy_max = vy_max_aux; 
     vy_max_cc = 1;
     ay_max=1;
@@ -442,13 +442,16 @@ if (twistlocks)
 end
 estado_barco2 = estado_barco2';
     
-    x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
-    y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-
-%    
-    figure(2)
-    plot(x_to_boat(1:length(y_to_boat),1),y_to_boat)
+%     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
+%     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
+% 
+% %    
+%     figure(2)
+%     plot(x_to_boat,y_to_boat(length(x_to_boat),1))
 %     hold on
+%     
+%     figure(3)
+%     plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
 % %     
 % %     plot(0, ysb, 'o', 'color', 'r')
 % %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
