@@ -2,7 +2,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     tic
     %Datos
     dt = 0.5e-3;
-    
+%% Calculo de potencia para determinar velocidad
     POT = 97500; %=32500*3=65000*1.5
     if(twistlocks)
         if ml <= 32500
@@ -18,6 +18,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     vx_max = 4;
     ay_max=1;
     ax_max=1;
+
+%% Datos generales grua   
     boat_wide = 6;
     boat_under_water = 10;
     hy_cont = 2.5;
@@ -26,14 +28,16 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     ysb=12;
     safety_distance=5;
     
+%% Coordenada en x de cada columna de contenedores respecto a muelle     
     %Determino la coordenada en x de cada columna
     x_positions = [hx_cont/2 + deltax_cont];
     for i=2:boat_wide
         x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
     end
+    
+    
+%% Determino columna con mayor cantidad de contairnes
     theta = atan(vy_max/vx_max);
-    
-    
     %Determino columna con mayor cantidad de containers
     [max_height_colunm,max_height_colunm_index] = max(estado_barco(1:posx_end));
     
@@ -78,20 +82,20 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     %perfiles de velocidad para x e y entre los puntos 0-1; 1-2.  
 
     if(deltay_part0>0)
-    
+        flag_elevation_init = 1;        
         while(true)    
-        time_max_acel_y =vy_max/ay_max;
-        y_aceled = (ay_max/2)*(time_max_acel_y^2);
-        %Aca es donde especifican las distancia desde la posicion en la
-        %direccion correspondiente donde estoy hasta el siguiente punto.
-        %Son todos deplazamientos relativos, despues arma la trayectoria
-        %sumando las condiciones inciales de cada punto.
-        t_velcont_y = (deltay_part0-(y_aceled*2))/vy_max;
-        if(t_velcont_y>=0)
-            break;
-        end
-        %vy_max_sc = vy_max_sc-0.0001;
-        vy_max = sqrt(deltay_part0*ay_max)-0.1;
+            time_max_acel_y =vy_max/ay_max;
+            y_aceled = (ay_max/2)*(time_max_acel_y^2);
+            %Aca es donde especifican las distancia desde la posicion en la
+            %direccion correspondiente donde estoy hasta el siguiente punto.
+            %Son todos deplazamientos relativos, despues arma la trayectoria
+            %sumando las condiciones inciales de cada punto.
+            t_velcont_y = (deltay_part0-(y_aceled*2))/vy_max;
+            if(t_velcont_y>=0)
+                break;
+            end
+            %vy_max_sc = vy_max_sc-0.0001;
+            vy_max = sqrt(deltay_part0*ay_max)-0.1;
         end
 
         %RESET VALUES
@@ -132,6 +136,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         %Negativo por la convencion de izaje.
         trayectoria_dy = [-dy0_t', t'];
     else
+        flag_elevation_init = 0;
         trayectoria_dx_aux= [];
         trayectoria_dy=[];
         trayectoria_dx = [];
@@ -149,26 +154,25 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
   
     k=1;
     while(true)  
-        while(true)
-        
-        time_max_acel_x =(vx_max*k)/ax_max;
-        %time_max_acel_x =(vx_max)/ax_max;
-        x_aceled = (ax_max/2)*(time_max_acel_x^2);
-        t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max*k);
-        %t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max);
-        if(t_velcont_x>=0)
-            break;
-        end
-        %vx_max=vx_max-0.0001;
-        vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) / k - 0.1;
+        while(true)        
+            time_max_acel_x =(vx_max*k)/ax_max;
+            %time_max_acel_x =(vx_max)/ax_max;
+            x_aceled = (ax_max/2)*(time_max_acel_x^2);
+            t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max*k);
+            %t_velcont_x = ((x_positions(posx_end)-posx_init) - 2*x_aceled)/(vx_max);
+            if(t_velcont_x>=0)
+                break;
+            end
+            vx_max=vx_max-0.0001;
+%             vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) / k - 0.1;
         end
 
         
         t_total_1 = (time_max_acel_x*2)+t_velcont_x;
-        if(flag==0)
+        
+        if(flag_elevation_init==0)
             t=0:dt:t_total_1;
-            t_total_0=0;
-        else    
+        elseif(flag_elevation_init==1)    
             t=dt:dt:t_total_1;
         end
         ax1_t = [];   
@@ -189,14 +193,14 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         dx1_t = cumtrapz(t,ax1_t);
 %         x1_t = cumtrapz(t,dx1_t) + posx_init;
         
-        if(flag==0)
+        if(flag_elevation_init==0)
             trayectoria_dx =[dx1_t' , t'];
-        else
-            if(~isempty(trayectoria_dx_aux))
+        elseif(flag_elevation_init==1)
+%             if(~isempty(trayectoria_dx_aux))
             trayectoria_dx =[trayectoria_dx_aux; [dx1_t' , t']];
-            else
-            trayectoria_dx=[dx1_t' , t'];
-            end
+%             else
+%             trayectoria_dx=[dx1_t' , t'];
+%             end
         end
         
         x_total = (posx_init + cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1)))';
@@ -206,7 +210,6 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         %Distancia al siguiente obstaculo
         if(flag==0)
             d_obs1=0;
-            y0_t=posy_init;
         else
             d_obs1 = x_positions(max_height_colunm_index);
         end
@@ -214,26 +217,26 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         %d_obs1.
 
         for u=1:length(x_total)
-            if((x_total(u)-d_obs1) <= 0.005)
+            if((x_total(u)-d_obs1) <= 0.01)
                 t_obs1 = trayectoria_dx(u,2);
             end
-            if((x_total(u)-x_positions(posx_end)) <= 0.005)
-                t_obs2 = trayectoria_dx(u,2);
-            end
+%             if((x_total(u)-x_positions(posx_end)) <= 0.005)
+%                 t_obs2 = trayectoria_dx(u,2);
+%             end
         end
-
+        t_obs2 = trayectoria_dx(end,2);
        %Datos para entrar al solver del perfil para el izaje: Deltat = t_obs1l Deltay = (y1-y0) Amax
         
         deltat1 = t_obs1 - t_total_0;
         if(flag==0)
             deltay1 = safety_distance + ysb - y0_t(end);
-        else
+        elseif(flag==1)
             deltay1 = max_height_colunm - y0_t(end);
         end
    
         Amax1 = ay_max;
 
-        prof_vel_1_2 = solve_vel_prof(deltay1,deltat1,Amax1);
+        prof_vel_1_2 = solve_profile_vel(deltay1,deltat1,Amax1);
 
         % Check if the end position is or not the highest column
         if(posx_end ~= max_height_colunm_index || (posx_end == max_height_colunm_index && flag==0))
@@ -248,7 +251,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
                     %representando cada indice el calculo para cada columna.
                     y_point3(u)=y_max-h_max+safety_distance;
                 end
-            else
+           elseif(flag==0)
                     d = x_positions(posx_end);
                     h_max=d*tan(theta);
                     y_point3=ysb-h_max+safety_distance;
@@ -266,10 +269,10 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 
             Amax2 = ay_max;
 
-            prof_vel_2_3 = solve_vel_prof(deltay2,deltat2,Amax2);
+            prof_vel_2_3 = solve_profile_vel(deltay2,deltat2,Amax2);
 
-%             if( ~(isempty(prof_vel_1_2.ts)) && ~(isempty(prof_vel_2_3.ts)) )
-            if(prof_vel_1_2(1) <= vy_max_aux && prof_vel_2_3(1) <= vy_max_aux)
+            if( ~(isempty(prof_vel_1_2.ts)) && ~(isempty(prof_vel_2_3.ts)) )
+%             if(prof_vel_1_2(1) <= vy_max_aux && prof_vel_2_3(1) <= vy_max_aux)
                 break;
             end
             k=k-0.1;
@@ -290,9 +293,9 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
     
     
     
-    ta1_2=double(prof_vel_1_2(3));
-    ts1_2= double(prof_vel_1_2(2));
-    vmax1_2=double(prof_vel_1_2(1));
+    ta1_2=double(prof_vel_1_2.ta);
+    ts1_2= double(prof_vel_1_2.ts);
+    vmax1_2=double(prof_vel_1_2.vmax);
     
     t_total_1_y = ta1_2*2 +ts1_2;
     if(flag==1)
@@ -313,23 +316,23 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
         end
     end
         
-    if(flag==1)
+    if(flag_elevation_init==1)
         if(~isempty(trayectoria_dy))
         t=t+trayectoria_dy(end,2);
         trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
         else
         trayectoria_dy = [trayectoria_dy ; [-vy1_t', t']];
         end
-    else
+    elseif(flag_elevation_init==0)
     trayectoria_dy = [-vy1_t', t'];
     end
     
 
     if(posx_end ~= max_height_colunm_index || (posx_end == max_height_colunm_index && flag==0))
     
-    ta2_3=double(prof_vel_2_3(3));
-    ts2_3= double(prof_vel_2_3(2));
-    vmax2_3=double(prof_vel_2_3(3));
+    ta2_3=double(prof_vel_2_3.ta);
+    ts2_3= double(prof_vel_2_3.ts);
+    vmax2_3=double(prof_vel_2_3.vmax);
     
     
     t_total_2_y = ta2_3*2 + ts2_3;
@@ -383,7 +386,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 
         %Tiempo total de trayectoria
         t_total_end = (time_max_acel_y*2)+t_velcont_y;
-        t=0:dt:t_total_end;
+        t=dt:dt:t_total_end;
         ayend_t = [];   
         %Determinacion de aceleraciones para cada isntante de tiempo 
         for u=1:length(t)
@@ -428,14 +431,18 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = gen_traj_to_bo
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
 % 
 %     
-%     figure(1)
-%     plot(x_to_boat,y_to_boat(1:length(x_to_boat),1))
+%     figure(1) 
+%     plot(trayectoria_dx(:,2),x_to_boat)
 %     hold on
+%     plot(trayectoria_dy(:,2),y_to_boat)
     
+%     figure(2)
+%     plot(x_to_boat(length(y_to_boat)),y_to_boat)
+%     hold on    
 %     plot(0, ysb, 'o', 'color', 'r')
 %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 
-    figure(1)
+
     plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
     
     toc
