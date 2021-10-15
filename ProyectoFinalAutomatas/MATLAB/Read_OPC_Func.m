@@ -10,7 +10,7 @@ persistent ua_Client;
         persistent xt;
         persistent yl;
         persistent vyt;		
-%         persistent switch_energy;
+        persistent switch_energy;
 % 		persistent balancer_switch;
 %         persistent twistlock;
 % 		persistent switch_mode;	
@@ -51,7 +51,8 @@ if init_Server == 0
     init_Server = 1;
         server = opcuaserverinfo('localhost');
         ua_Client = opcua(server);
-        connect(ua_Client,'tom','tom');
+        %connect(ua_Client,'tom','tom');
+        connect(ua_Client, 'gabrielq', 'incorrecta1');
 end
 
 if ua_Client.isConnected && init_Nodes == 0
@@ -80,7 +81,7 @@ if ua_Client.isConnected && init_Nodes == 0
     vyt = findNodeByName(DB_Node,'vyt','-once');    
     Fw = findNodeByName(DB_Node,'Fw','-once');
     theta_amp = findNodeByName(DB_Node,'theta_amp','-once'); 
-%     switch_energy = findNodeByName(DB_Node,'switch_energy','-once');
+    switch_energy = findNodeByName(DB_Node,'switch_energy','-once');
 %     balancer_switch = findNodeByName(DB_Node,'balancer_switch','-once');    
 %     twistlock = findNodeByName(DB_Node,'twistlock','-once');
 %     switch_mode = findNodeByName(DB_Node,'switch_mode','-once'); 
@@ -104,6 +105,7 @@ if ua_Client.isConnected == 1 && init_Nodes==1
                 [load_state, ~,~] = readValue(ua_Client,Load_state);
                  [Flag_gen_traj_boat, ~,~] = readValue(ua_Client,flag_gen_traj_boat);
                   [Flag_gen_traj_dock, ~,~] = readValue(ua_Client,flag_gen_traj_dock);
+                   [Switch_energy, ~,~] = readValue(ua_Client,switch_energy);
     
     writeValue(ua_Client,xt,y(1));
     writeValue(ua_Client,yl,y(2));
@@ -117,7 +119,7 @@ if ua_Client.isConnected == 1 && init_Nodes==1
     writeValue(ua_Client,Stable_FW_flag,y(6));
     writeValue(ua_Client,xend,y(7));
 end
-x = double([Balancer Flag_add_random_mass Rand_mass Flag_semiauto Limit_going_down Limit_vxt_down Mode_balance Reset_calc_mass Flag_end_traj Flag_send_traj Reset_going Reset_down load_state Flag_gen_traj_boat Flag_gen_traj_dock]); 
+x = double([Balancer Flag_add_random_mass Rand_mass Flag_semiauto Limit_going_down Limit_vxt_down Mode_balance Reset_calc_mass Flag_end_traj Flag_send_traj Reset_going Reset_down load_state Flag_gen_traj_boat Flag_gen_traj_dock Switch_energy]); 
 % x = double(Balancer);
 end
 
