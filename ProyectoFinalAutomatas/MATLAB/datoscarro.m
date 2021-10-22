@@ -123,17 +123,17 @@ ksiaiz = -(wposiz^3)*Mheq*(Rd/rtd);
 
 
 %% Testeo generacion de trayectorias
+% % 
+% % [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,10,15,5,1,1], -20, yl0,4,1,ml);
 % 
-% [vyt,vxt,x_end,vxt_end,vyt_end,len,new_state]=gen_traj_to_boat([5,10,15,5,1,1], -20, yl0,4,1,ml);
-
-% boat_state = [6 5 10 4 8 4];
+% boat_state = [6;5;7;4;5; 4];
 % x_positions = [1.420000000000000,4.060000000000000,6.700000000000000,9.340000000000000,11.979999999999999,14.619999999999997]
 % 
 % 
-% posx_init = x_positions(6);
-% posy_init = 4*2.5 - 10;
+% posx_init = x_positions(4);
+% posy_init = 10*2.5 - 10;
 % posx_end = 1;
 % 
 % [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2]=gen_traj_to_dock(boat_state,posx_init,posy_init,posx_end,0,15000);
-% 
 % % 
+% % % 
