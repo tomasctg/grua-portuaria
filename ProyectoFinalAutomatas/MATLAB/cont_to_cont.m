@@ -5,19 +5,21 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
     %Datos
     dt = 0.5e-3;
     
+    POT = 97500; %=32500*3=65000*1.5
     if(twistlocks)
         if ml <= 32500
             vy_max_aux = 3;
         elseif ml <= 65000
-            vy_max_aux = 4.5 -(3/65000)*ml;
+            vy_max_aux = POT/ml;
         end
     else
         vy_max_aux = 3;
     end
     
+    
     %Parametros
-    vy_max = vy_max_aux
-    vx_max = 1.0;
+    vy_max = vy_max_aux;
+    vx_max = 2.0;
     ay_max=1;
     ax_max=1;
     boat_wide = 6;
@@ -34,7 +36,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
     for i=2:boat_wide
         x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
         if(abs(posx_init - x_positions(i)) <= 0.1)
-            posx_init_index = i
+            posx_init_index = i;
         end
     end
    
@@ -61,12 +63,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
                 if(t_velcont_y>=0)
                     break;
                 end
-                %vy_max_sc = vy_max_sc-0.0001;
-                vy_max = sqrt((max_height_colunm - (posy_init))*ay_max)-0.1;
-       end
+                vy_max = vy_max-0.001;
+%                 vy_max = sqrt((max_height_colunm - (posy_init))*ay_max)-0.1;
+        end
 
                 %RESET VALUES
-                vx_max = 1.0; %[m/s]
+                vx_max = 2.0; %[m/s]
                 vy_max = vy_max_aux;
                 ay_max=1;
                 ax_max=1;
@@ -111,8 +113,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
             if(t_velcont_x>=0)
                 break;
             end
-            %vx_max=vx_max-0.0001;
-            vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) - 0.1;
+            vx_max=vx_max-0.001;
+%             vx_max = sqrt( ( x_positions(posx_end)-posx_init ) * ax_max ) - 0.1;
         end
         
         t_total_1 = (time_max_acel_x*2)+t_velcont_x;
@@ -149,11 +151,11 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
             if(t_velcont_y>=0)
             break;
             end
-            vy_max=vy_max-0.01;
-            end
+            vy_max=vy_max-0.001;
+        end
 
             %RESET VALUES
-            vx_max = 1.0; %[m/s]
+            vx_max = 2.0; %[m/s]
             vy_max = vy_max_aux; 
             ay_max=1;
             ax_max=1;
@@ -208,12 +210,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
                 if(t_velcont_y>=0)
                     break;
                 end
-                %vy_max_sc = vy_max_sc-0.0001;
-                vy_max = sqrt((max_height_colunm - (posy_init))*ay_max)-0.1;
+                vy_max = vy_max-0.001;
+%                 vy_max = sqrt((max_height_colunm - (posy_init))*ay_max)-0.1;
        end
 
                 %RESET VALUES
-                vx_max = 1.0; %[m/s]
+                vx_max = 2.0; %[m/s]
                 vy_max = vy_max_aux;
                 ay_max=1;
                 ax_max=1;
@@ -258,8 +260,8 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
             if(t_velcont_x>=0)
                 break;
             end
-            %vx_max=vx_max-0.0001;
-            vx_max = sqrt( abs((x_positions(posx_end)-posx_init)) * ax_max ) - 0.1;
+            vx_max=vx_max-0.001;
+%             vx_max = sqrt( abs((x_positions(posx_end)-posx_init)) * ax_max ) - 0.1;
         end
         
         t_total_1 = (time_max_acel_x*2)+t_velcont_x;
@@ -296,11 +298,11 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
             if(t_velcont_y>=0)
             break;
             end
-            vy_max=vy_max-0.01;
-            end
+            vy_max=vy_max-0.001;
+        end
 
             %RESET VALUES
-            vx_max = 1.0; %[m/s]
+            vx_max = 2.0; %[m/s]
             vy_max = vy_max_aux; 
             ay_max=1;
             ax_max=1;
@@ -355,14 +357,14 @@ estado_barco2 = estado_barco2';
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
 %     y_to_boat=[y_to_boat; y_to_boat(end)-cumtrapz(t,vyt_end)];
 %     x_to_boat=[x_to_boat; x_to_boat(end)+cumtrapz(t,vxt_end)];
-%     
-% % 
-%     figure(5)
-%         plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
-%         hold on
-%         plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
-%         hold on
 % %     
+% % % 
+    figure(5)
+        plot(trayectoria_dx(:,2),trayectoria_dx(:,1))
+        hold on
+        plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+        hold on
+% % %     
 figure(3)     
 plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
 % 

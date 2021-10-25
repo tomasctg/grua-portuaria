@@ -2,7 +2,8 @@ function x = Read_OPC_Func(y)
 %Variables
 persistent init_Server;
 persistent init_Nodes;
-persistent ua_Client;
+% persistent ua_Client2;
+persistent ua_Client2;
 
 %Nodes
     %Level 0
@@ -39,10 +40,11 @@ persistent ua_Client;
         persistent flag_gen_traj_boat;
 		persistent flag_gen_traj_dock;
         
-        persistent flag_enable_level1;
+        persistent switch_energy;
 		persistent	flag_enable_brakes;
         persistent x_position_setpoint;
-		
+		persistent flag_gen_traj_cont;
+
 
 
 %initializate variables
@@ -54,14 +56,13 @@ end
 if init_Server == 0
     init_Server = 1;
         server = opcuaserverinfo('localhost');
-        ua_Client = opcua(server);
-        connect(ua_Client, 'gabrielq', 'incorrecta1');
-
+        ua_Client2 = opcua(server);
+        connect(ua_Client2,'tom','tom');
 end
 
-if ua_Client.isConnected && init_Nodes == 0
+if ua_Client2.isConnected && init_Nodes == 0
     init_Nodes =1;
-    DB_Node = findNodeByName(ua_Client.Namespace,'GVL0','-once');
+    DB_Node = findNodeByName(ua_Client2.Namespace,'GVL0','-once');
 
     %READ
     balancer = findNodeByName(DB_Node,'balancer','-once');
@@ -79,9 +80,11 @@ if ua_Client.isConnected && init_Nodes == 0
     Load_state = findNodeByName(DB_Node,'Load_state','-once');    
     flag_gen_traj_boat = findNodeByName(DB_Node,'flag_gen_traj_boat','-once');
     flag_gen_traj_dock = findNodeByName(DB_Node,'flag_gen_traj_dock','-once');   
-    flag_enable_level1 = findNodeByName(DB_Node,'flag_enable_level1','-once');
+    switch_energy = findNodeByName(DB_Node,'switch_energy','-once');
     flag_enable_brakes = findNodeByName(DB_Node,'flag_enable_brakes','-once');   
-    x_position_setpoint = findNodeByName(DB_Node,'x_position_setpoint','-once');   
+    x_position_setpoint = findNodeByName(DB_Node,'x_position_setpoint','-once');  
+    flag_gen_traj_cont = findNodeByName(DB_Node,'flag_gen_traj_cont','-once');  
+    
     
     %WRITE
     xt = findNodeByName(DB_Node,'xt','-once');
@@ -96,40 +99,42 @@ if ua_Client.isConnected && init_Nodes == 0
     Stable_FW_flag = findNodeByName(DB_Node,'Stable_FW_flag','-once');
     xend = findNodeByName(DB_Node,'xend','-once');
 end
-if ua_Client.isConnected == 1 && init_Nodes==1
+if ua_Client2.isConnected == 1 && init_Nodes==1
     
-    [Balancer, ~,~] = readValue(ua_Client,balancer);
-     [Flag_add_random_mass, ~,~] = readValue(ua_Client,flag_add_random_mass);
-      [Rand_mass, ~,~] = readValue(ua_Client,rand_mass);
-       [Flag_semiauto, ~,~] = readValue(ua_Client,flag_semiauto);
-        [Limit_going_down, ~,~] = readValue(ua_Client,limit_going_down);
-         [Limit_vxt_down, ~,~] = readValue(ua_Client,limit_vxt_down);
-          [Mode_balance, ~,~] = readValue(ua_Client,mode_balance);
-           [Reset_calc_mass, ~,~] = readValue(ua_Client,reset_calc_mass);
-            [Flag_end_traj, ~,~] = readValue(ua_Client,flag_end_traj);
-             [Flag_send_traj, ~,~] = readValue(ua_Client,flag_send_traj);
-              [Reset_going, ~,~] = readValue(ua_Client,reset_going);
-               [Reset_down, ~,~] = readValue(ua_Client,reset_down);
-                [load_state, ~,~] = readValue(ua_Client,Load_state);
-                 [Flag_gen_traj_boat, ~,~] = readValue(ua_Client,flag_gen_traj_boat);
-                  [Flag_gen_traj_dock, ~,~] = readValue(ua_Client,flag_gen_traj_dock);
-                   [Flag_enable_level1, ~,~] = readValue(ua_Client,flag_enable_level1);
-                    [Flag_enable_brakes, ~,~] = readValue(ua_Client,flag_enable_brakes);
-                     [X_position_setpoint, ~,~] = readValue(ua_Client,x_position_setpoint);
-    
-    writeValue(ua_Client,xt,y(1));
-    writeValue(ua_Client,yl,y(2));
-    writeValue(ua_Client,vyt,y(3));
-    writeValue(ua_Client,Fw,y(4));
-    writeValue(ua_Client,theta_amp,y(5));
-%     writeValue(ua_Client,switch_energy,y(6));
-%     writeValue(ua_Client,balancer_switch,y(7));
-%     writeValue(ua_Client,twistlock,y(8));
-%     writeValue(ua_Client,switch_mode,y(5));
-    writeValue(ua_Client,Stable_FW_flag,y(6));
-    writeValue(ua_Client,xend,y(7));
+    [Balancer, ~,~] = readValue(ua_Client2,balancer);
+     [Flag_add_random_mass, ~,~] = readValue(ua_Client2,flag_add_random_mass);
+      [Rand_mass, ~,~] = readValue(ua_Client2,rand_mass);
+       [Flag_semiauto, ~,~] = readValue(ua_Client2,flag_semiauto);
+        [Limit_going_down, ~,~] = readValue(ua_Client2,limit_going_down);
+         [Limit_vxt_down, ~,~] = readValue(ua_Client2,limit_vxt_down);
+          [Mode_balance, ~,~] = readValue(ua_Client2,mode_balance);
+           [Reset_calc_mass, ~,~] = readValue(ua_Client2,reset_calc_mass);
+            [Flag_end_traj, ~,~] = readValue(ua_Client2,flag_end_traj);
+             [Flag_send_traj, ~,~] = readValue(ua_Client2,flag_send_traj);
+              [Reset_going, ~,~] = readValue(ua_Client2,reset_going);
+               [Reset_down, ~,~] = readValue(ua_Client2,reset_down);
+                [load_state, ~,~] = readValue(ua_Client2,Load_state);
+                 [Flag_gen_traj_boat, ~,~] = readValue(ua_Client2,flag_gen_traj_boat);
+                  [Flag_gen_traj_dock, ~,~] = readValue(ua_Client2,flag_gen_traj_dock);
+                   [Switch_energy, ~,~] = readValue(ua_Client2,switch_energy);
+                    [Flag_enable_brakes, ~,~] = readValue(ua_Client2,flag_enable_brakes);
+                     [X_position_setpoint, ~,~] = readValue(ua_Client2,x_position_setpoint);
+                       [Flag_gen_traj_cont, ~,~] = readValue(ua_Client2,flag_gen_traj_cont);
+   
+                     
+    writeValue(ua_Client2,xt,y(1));
+    writeValue(ua_Client2,yl,y(2));
+    writeValue(ua_Client2,vyt,y(3));
+    writeValue(ua_Client2,Fw,y(4));
+    writeValue(ua_Client2,theta_amp,y(5));
+%     writeValue(ua_Client2,switch_energy,y(6));
+%     writeValue(ua_Client2,balancer_switch,y(7));
+%     writeValue(ua_Client2,twistlock,y(8));
+%     writeValue(ua_Client2,switch_mode,y(5));
+    writeValue(ua_Client2,Stable_FW_flag,y(6));
+    writeValue(ua_Client2,xend,y(7));
 end
-x = double([Balancer Flag_add_random_mass Rand_mass Flag_semiauto Limit_going_down Limit_vxt_down Mode_balance Reset_calc_mass Flag_end_traj Flag_send_traj Reset_going Reset_down load_state Flag_gen_traj_boat Flag_gen_traj_dock Flag_enable_level1 Flag_enable_brakes X_position_setpoint]); 
+x = double([Balancer Flag_add_random_mass Rand_mass Flag_semiauto Limit_going_down Limit_vxt_down Mode_balance Reset_calc_mass Flag_end_traj Flag_send_traj Reset_going Reset_down load_state Flag_gen_traj_boat Flag_gen_traj_dock Switch_energy Flag_enable_brakes X_position_setpoint Flag_gen_traj_cont]); 
 % x = double(Balancer);
 end
 

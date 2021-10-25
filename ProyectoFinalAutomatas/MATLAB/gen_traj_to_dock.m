@@ -463,12 +463,12 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
 
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-% 
+
 %     figure(1) 
 %     plot(trayectoria_dx(:,2),x_to_boat)
 %     hold on
 %     plot(trayectoria_dy(:,2),y_to_boat)
-% %     
+%     
 %     figure(2)
 %     plot(x_to_boat,y_to_boat)
 %     hold on
