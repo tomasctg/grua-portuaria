@@ -36,7 +36,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     
     for i=2:boat_wide
         x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
-        if(abs(posx_init - x_positions(i)) <= 0.1)
+        if(abs(posx_init - x_positions(i)) <=  (2.44/2) + 0.1)
             posx_init_index = i;
         end
     end
@@ -406,7 +406,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     if(t_velcont_y>=0)
         break;
     end
-    vy_max=vy_max-0.01;
+    vy_max=vy_max-0.001;
         end
         %RESET VALUES
         vx_max = 4.0; %[m/s]
@@ -460,15 +460,15 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
         estado_barco2(posx_init) = estado_barco(posx_init) - 1;
     end
     estado_barco2 = estado_barco2';
-
+% 
 %     x_to_boat=cumtrapz(trayectoria_dx(:,2),trayectoria_dx(:,1))+x_positions(posx_init);
 %     y_to_boat=-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init;
-
+% 
 %     figure(1) 
 %     plot(trayectoria_dx(:,2),x_to_boat)
 %     hold on
 %     plot(trayectoria_dy(:,2),y_to_boat)
-%     
+    
 %     figure(2)
 %     plot(x_to_boat,y_to_boat)
 %     hold on
@@ -483,14 +483,15 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
 %     hold on
 %     end
     
-%     figure(3)
-%     plot(trayectoria_dy(:,2),trayectoria_dy(:,1))
+    figure(78)
+    plot(trayectoria_dy(:,2),vyt);
+    plot(trayectoria_dx(:,2),vxt);
 % %     
 % %     plot(0, ysb, 'o', 'color', 'r')
 % %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 % 
-
-plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water)
+figure(55)
+plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water);
 
         
 end

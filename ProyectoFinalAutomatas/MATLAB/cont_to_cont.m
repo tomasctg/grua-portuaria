@@ -35,7 +35,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
     posx_init_index = 1;
     for i=2:boat_wide
         x_positions(i)=(x_positions(i-1) + hx_cont + deltax_cont);
-        if(abs(posx_init - x_positions(i)) <= 0.1)
+        if(abs(posx_init - x_positions(i)) <=  (2.44/2) + 0.1)
             posx_init_index = i;
         end
     end
@@ -68,7 +68,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len,len2,estado_barco2] = cont_to_cont(e
         end
 
                 %RESET VALUES
-                vx_max = 2.0; %[m/s]
+                vx_max = 1.0; %[m/s]
                 vy_max = vy_max_aux;
                 ay_max=1;
                 ax_max=1;
