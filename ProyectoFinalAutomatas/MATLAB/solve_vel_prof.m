@@ -1,4 +1,4 @@
-function x = solve_vel_prof(A,B,C)
+unction x = solve_vel_prof(A,B,C)
 x0 = [1,1,1];
 x = lsqnonlin(@root3d,x0,zeros(size(x0))); 
     function F = root3d(x)
