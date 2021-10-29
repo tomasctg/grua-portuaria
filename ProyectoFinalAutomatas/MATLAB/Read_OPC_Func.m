@@ -57,7 +57,8 @@ if init_Server == 0
     init_Server = 1;
         server = opcuaserverinfo('localhost');
         ua_Client2 = opcua(server);
-        connect(ua_Client2,'tom','tom');
+        %connect(ua_Client2,'tom','tom');
+        connect(ua_Client2, 'gabrielq', 'incorrecta1');
 end
 
 if ua_Client2.isConnected && init_Nodes == 0

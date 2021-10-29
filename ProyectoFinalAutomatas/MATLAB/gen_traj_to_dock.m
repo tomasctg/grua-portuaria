@@ -390,7 +390,7 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
     trayectoria_dy = [trayectoria_dy; [vy2_t', t']];
     vyt = trayectoria_dy(:,1);
     vxt = trayectoria_dx(:,1);
-    x_end = x_positions_dock(posx_end);
+    x_end = -20; 
     y2_t=(-cumtrapz(trayectoria_dy(:,2),trayectoria_dy(:,1))+posy_init);
  
         
@@ -483,14 +483,14 @@ function [vyt,vxt,x_end,vxt_end,vyt_end,len_going,len_down,estado_barco2] = gen_
 %     hold on
 %     end
     
-    figure(78)
-    plot(trayectoria_dy(:,2),vyt);
-    plot(trayectoria_dx(:,2),vxt);
-% %     
+%     figure(78)
+%     plot(trayectoria_dy(:,2),vyt);
+%     plot(trayectoria_dx(:,2),vxt);
+% % %     
 % %     plot(0, ysb, 'o', 'color', 'r')
 % %     plot(x_positions, estado_barco*hy_cont - boat_under_water, 'o', 'color', 'r')
 % 
-figure(55)
+% figure(55)
 plot_scene(estado_barco2, x_positions, hy_cont, hx_cont, deltax_cont, ysb, boat_under_water);
 
         
